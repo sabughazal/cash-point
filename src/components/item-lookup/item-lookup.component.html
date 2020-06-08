@@ -1,0 +1,49 @@
+<div #container class="d-flex flex-wrap align-content-start flex-wrap" id="container">
+
+    <div class="input-group input-group-lg" style="padding: 2px" [ngStyle]="{'width.px': (container.offsetWidth - 30)}">
+        <input #search type="text" placeholder="Search by Barcode or Name" class="form-control" (input)="onSearchInput($event.target.value)">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>
+        </div>
+    </div>
+    <div class="input-group" style="padding: 2px" [ngStyle]="{'width.px': (container.offsetWidth - 30)}">
+        <input type="text" placeholder="Barcode Scanner" class="form-control" (change)="onBarcodeInput($event)">
+    </div>
+
+    <div *ngIf="categoryStack.length > 0"
+        class="p-2 item-square" 
+        [ngStyle]="{'width.px': ((container.offsetWidth - 30) / itemsPerRow), 'height.px': ((container.offsetWidth - 30) / itemsPerRow)}">
+
+        <div class="d-flex justify-content-center flex-column text-center item" (click)="onBackClick()">
+            <div class="align-self-center">
+                <img src="assets/icons/back.png" style="width: 40%; height: auto;">
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngFor="let category of currentCategories"
+        class="p-2 item-square" 
+        [ngStyle]="{'width.px': ((container.offsetWidth - 30) / itemsPerRow), 'height.px': ((container.offsetWidth - 30) / itemsPerRow)}">
+
+        <div class="d-flex justify-content-center flex-column text-center item" (click)="onCategoryClick(category)">
+            <div class="align-self-center">
+                <h6>{{ category.name }}</h6>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let item of currentItems"
+        class="p-2 item-square" 
+        [ngStyle]="{'width.px': ((container.offsetWidth - 30) / itemsPerRow), 'height.px': ((container.offsetWidth - 30) / itemsPerRow)}">
+
+        <div class="d-flex justify-content-center flex-column text-center item" (click)="onItemClick(item)">
+            <div class="align-self-center mt-auto">
+                <h6>{{ item.description }}</h6>
+            </div>
+            <div class="align-self-center mt-auto">
+                <span>{{ item.selling_price | number: '1.2-2' }}</span>
+            </div>
+        </div>
+    </div>
+</div>

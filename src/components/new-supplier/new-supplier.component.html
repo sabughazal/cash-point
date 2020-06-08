@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Supplier</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" formControlName="name" id="name">
+        </div>
+        <div class="form-group">
+          <label for="tax_number">Tax Registration Number (TRN)</label>
+          <input type="number" class="form-control" formControlName="tax_number" id="tax_number">
+        </div>
+        <div class="form-group">
+          <label for="contact">Contact</label>
+          <input type="text" class="form-control" formControlName="contact" id="contact">
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick(form)">Save New Supplier</button>
+</div>

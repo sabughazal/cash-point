@@ -1,0 +1,19 @@
+#container {
+    height: 100% !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    overflow-y: auto;
+}
+
+.item-square {
+    padding: 2px !important;
+}
+
+.item {
+    padding: 8px 10px;
+    border: 1px solid grey;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}

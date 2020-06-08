@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Item</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="form">
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text" class="form-control" formControlName="description" id="description">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" formControlName="category" id="category">
+            <option value="">None</option>
+            <option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="barcode">Barcode</label>
+          <input type="text" class="form-control" formControlName="barcode" id="barcode">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" formControlName="by_weight" id="by_weight">
+          <label class="form-check-label" for="by_weight">By Kilo (like Vegetables)</label>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick(form)">Save New Item</button>
+</div>

@@ -1,0 +1,40 @@
+<div id="container" class="d-flex flex-column">
+
+    <div class="d-flex align-items-center mb-3" id="header">
+        <div class="p-2">
+            <h1 class="display-4">Sales History</h1>
+        </div>
+    </div>
+    
+
+    <div class="flex-fill" style="overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Total Credit</th>
+                    <th scope="col">Last Sale</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers; index as i">
+                    <th scope="row">{{ customer.id }}</th>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td>{{ customer.contact }}</td>
+                    <td>{{ customer.total_credit | number }}</td>
+                    <td>{{ customer.last_sale | date: 'MMM d, y' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/customers/'+customer.id]" routerDirection="forward">Refund</button>
+                        <!-- &nbsp; -->
+                        <!-- <button type="button" class="btn btn-outline-danger btn-sm">Delete</button> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

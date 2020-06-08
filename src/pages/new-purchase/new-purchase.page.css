@@ -1,0 +1,13 @@
+#container {
+    height: 100%;
+    padding: 10px 15px;
+}
+
+#header {
+    width: 100%;
+}
+
+.purchase-item {
+    padding: 5px 0px;
+    border-bottom: 1px dashed lightgrey;
+}

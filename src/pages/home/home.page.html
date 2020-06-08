@@ -1,0 +1,8 @@
+<div class="row no-gutters">
+    <div class="col-4 left-panel">
+        <app-sale #sale></app-sale>
+    </div>
+    <div class="col-8 right-panel" >
+        <app-item-lookup (onItemSelect)="onItemSelect($event)"></app-item-lookup>
+    </div>
+</div>

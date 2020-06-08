@@ -1,0 +1,45 @@
+<div id="container" class="d-flex flex-column">
+
+    <div class="d-flex align-items-center mb-3" id="header">
+        <div class="p-2">
+            <h1 class="display-4">Products & Stock</h1>
+        </div>
+        <div class="ml-auto p-2 flex-shrink-1">
+            <button type="button" class="btn btn-warning btn-lg" (click)="onNewItemClick()">New Item</button>
+        </div>
+    </div>
+
+
+    <div class="input-group input-group-lg mb-3" style="padding: 2px; width: 100%;">
+        <input #search type="text" placeholder="Search products by Barcode or Name" class="form-control" (input)="onSearchInput($event.target.value)">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>
+        </div>
+    </div>
+    <div class="flex-fill" style="overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Selling Price</th>
+                    <th scope="col">Date Added</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of currentItems; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.barcode }}</td>
+                    <td>{{ item.selling_price | number: '1.2-2' }}</td>
+                    <td>{{ item.date_added | date: 'MMM d, y' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/stock/product/'+item.id]" routerDirection="forward">View</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
