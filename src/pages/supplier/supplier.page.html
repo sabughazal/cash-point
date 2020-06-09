@@ -5,16 +5,63 @@
             <img src="assets/icons/back-64.png" width="64">
         </div>
         <div class="p-2">
-            <h1 class="display-4">Supplier {{customerId}}</h1>
+            <h1 class="display-4" *ngIf="supplier">{{ supplier.name }}</h1>
         </div>
         <div class="ml-auto p-2 flex-shrink-1">
             <button type="button" class="btn btn-warning btn-lg" [routerLink]="['./new-purchase']" routerDirection="forward">New Purchase</button>
         </div>
     </div>
 
-    <ul>
-        <li>Supplier purchases.</li>
-        <li>View a purchase and add payments to a purchase.</li>
-        <li>View the total money owed to the supplier.</li>
-    </ul>
+    <div class="flex-fill" style="overflow-y: auto;">
+        <div class="row no-gutters" style="height: 100%;">
+            <div class="col-sm p-2">
+                <h4>Purchases</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Type</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let purchase of purchases; index as i">
+                            <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
+                            <td>
+                                {{ purchase.grand_total | number: '1.2-2' }}
+                                <span *ngIf="purchase.type == 'credit'"> (Balance {{ purchase.grand_total | number: '1.2-2' }})</span>
+                            </td>
+                            <td>{{ purchase.type }}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="viewPurchasePayments(purchase)">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-4 p-2" style="border-left: 1px solid lightgrey;">
+                <h4>Payments</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let purchase of purchases; index as i">
+                            <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
+                            <td>{{ purchase.grand_total | number: '1.2-2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success float-right" (click)="onNewPaymentClick()">Add Payment</button>
+            </div>
+        </div>
+    </div>
+    <div class="align-items-center mb-3">
+        <h5>Total Unpaid Amount: <span class="badge badge-warning">{{ 10 | number: '1.2-2' }}</span></h5>
+    </div>
+
 </div>

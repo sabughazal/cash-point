@@ -31,11 +31,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let customer of currentCustomers; index as i">
-                    <th scope="row">{{ customer.id }}</th>
+                    <th scope="row">{{ i + 1 }}</th>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.address }}</td>
                     <td>{{ customer.contact }}</td>
-                    <td>{{ customer.total_credit | number: '1.2-2' }}</td>
+                    <td>{{ customer.total_credit ? customer.total_credit : 0 | number: '1.2-2' }}</td>
                     <td>{{ customer.last_sale | date: 'MMM d, y' }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/customers/'+customer.id]" routerDirection="forward">View</button>

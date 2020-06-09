@@ -1,5 +1,19 @@
 <div id="container" class="d-flex flex-column">
 
+    <div class="mt-auto" style="padding: 2px">
+        
+        <div ngbDropdown class="d-inline-block float-right ml-1">
+            <button class="btn btn-outline-primary btn-lg" id="dropdownBasic1" ngbDropdownToggle>Saved ({{ savedSales.length }})</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div *ngIf="!savedSales.length" class="text-center"><em>Empty </em></div>
+                <button *ngFor="let sale of savedSales; index as i" (click)="selectSavedSale(i)" ngbDropdownItem>{{ sale.title }}</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-lg" [disabled]="!this.saleTotal" (click)="saveSale()">Save</button>
+        <button type="button" class="btn btn-danger btn-lg ml-1" (click)="clearSale()">del</button>
+
+    </div>
+
     <div class="flex-fill" style="overflow-y: auto;">
 
         <!-- Sale Items List -->
@@ -37,7 +51,7 @@
                 <h5>Subtotal</h5>
             </div>
             <div class="text-right">
-                <h5>{{ saleTaxAmount | number: '1.2-2' }}</h5>
+                <h5>{{ saleVatAmount | number: '1.2-2' }}</h5>
                 <h5>{{ saleSubtotal | number: '1.2-2' }}</h5>
             </div>
         </div>
@@ -45,8 +59,8 @@
 
     <div class="p-2 mt-auto">
         <div class="btn-group btn-group-lg btn-block" role="group">
-            <button type="button" class="btn btn-success btn-lg" (click)="onCashClick()">Cash</button>
-            <button type="button" class="btn btn-secondary btn-lg" (click)="onCreditClick()">Credit</button>
+            <button type="button" class="btn btn-success btn-lg" [disabled]="!this.saleTotal" (click)="onCashClick()">Cash</button>
+            <button type="button" class="btn btn-secondary btn-lg" [disabled]="!this.saleTotal" (click)="onCreditClick()">Credit</button>
         </div>
     </div>
 </div>

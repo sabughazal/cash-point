@@ -20,7 +20,12 @@ export class CustomersPage implements OnInit {
   }
 
   onNewCustomerClick() {
-    this.modalService.open(NewCustomerComponent, { size: 'lg' });
+    var ref = this.modalService.open(NewCustomerComponent, { size: 'lg' });
+    ref.result.finally(() => {
+      console.log("finally");
+      
+      this.loadCustomers();
+    });
   }
 
   onSearchInput(query) {

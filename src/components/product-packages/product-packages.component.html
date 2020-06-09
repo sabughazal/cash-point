@@ -1,14 +1,74 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Product Packages</h4>
+    <ul ngbNav #nav="ngbNav" class="nav nav-fill" style="width: 100%;">
+
+        <li ngbNavItem>
+            <a ngbNavLink>Product Packages</a>
+            <ng-template ngbNavContent>
+                <div *ngIf="!packages.length" class="d-flex justify-content-center p-5 w-100">
+                    <div class="align-self-center">
+                        <p>No Packages for this item</p>
+                    </div>
+                </div>
+                <div *ngIf="packages.length" class="list-group" style="height: 300px; overflow-y: auto;">
+                    <a *ngFor="let product of packages" class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ product.description }}</h6>
+                            <small>Price: {{ product.selling_price | number: '1.2-2' }} ({{ product.subitem_count }} pieces)</small>
+                        </div>
+                        <p>
+                            <em>{{ product.barcode }}</em>
+                        </p>
+                    </a>
+                </div>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem>
+            <a ngbNavLink>Add Package</a>
+            <ng-template ngbNavContent>
+                <div class="d-flex justify-content-center p-5 w-100">
+                    <div *ngIf="!form.get('item').valid" class="align-self-center">
+                        <button type="submit" class="btn btn-outline-secondary" (click)="openModal(itemLookupModal)">Select Item</button>
+                    </div>
+                    <div *ngIf="form.get('item').valid" class="align-self-center text-center">
+                        <h4>{{ selectedItem.description }}</h4>
+                        <p><em>{{ selectedItem.barcode }}</em></p>
+                        <button type="submit" class="btn btn-outline-primary" (click)="changeSelectedItem()">Change</button>
+                    </div>
+                </div>
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                    <div class="form-group">
+                      <label for="subitem_count">Number of Items Inside</label>
+                      <input type="number" step="1" class="form-control" formControlName="subitem_count" id="subitem_count">
+                    </div>
+                    <button type="submit" class="btn btn-success">Save New Package</button>
+                </form>
+            </ng-template>
+        </li>
+    </ul>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
-    <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
     </button>
 </div>
 
 <div class="modal-body">
-    <h1>Hey</h1>
+    <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark">Save</button>
-</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
+</div> -->
+
+
+
+<ng-template #itemLookupModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Select Package Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="height: 600px">
+        <app-item-lookup (onItemSelect)="onPackageItemSelect($event)"></app-item-lookup>
+    </div>
+</ng-template>

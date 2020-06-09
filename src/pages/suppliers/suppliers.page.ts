@@ -23,7 +23,10 @@ export class SuppliersPage implements OnInit {
   }
 
   onNewSupplierClick() {
-    this.modalService.open(NewSupplierComponent, { size: 'lg' });
+    var ref = this.modalService.open(NewSupplierComponent, { size: 'lg' });
+    ref.result.finally(() => {
+      this.loadSuppliers();
+    });
   }
   
 

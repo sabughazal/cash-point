@@ -16,7 +16,12 @@ export class ProductPage implements OnInit {
   productId: any;
   product: any;
 
-  constructor(private modalService: NgbModal, private formBuilder: FormBuilder, private route: ActivatedRoute, private itemService: ItemService) {
+  constructor(
+    private modalService: NgbModal, 
+    private formBuilder: FormBuilder, 
+    private route: ActivatedRoute, 
+    private itemService: ItemService
+  ) {
     this.productId = this.route.snapshot.paramMap.get('id');
     // prepare the form group
     this.updatePriceForm = this.formBuilder.group({
@@ -25,16 +30,12 @@ export class ProductPage implements OnInit {
   }
 
   ngOnInit() {
-    this.itemService.getItemById(this.productId).then(response => {
-      if (response.data[0]) {
-        this.product = response.data[0];
-        this.updatePriceForm.get('price').setValue(this.product.selling_price);
-      }
-    });
+    this.loadProduct();
   }
 
   onPackagesClick() {
-    this.modalService.open(ProductPackagesComponent, { size: 'lg' });
+    var ref = this.modalService.open(ProductPackagesComponent, { size: 'lg' });
+    ref.componentInstance.product = this.product;
   }
 
   onUpdatePriceFormSubmit(form) {
@@ -45,6 +46,18 @@ export class ProductPage implements OnInit {
     //   this.loadItemDetails(this.sku);
     //   this.updatePriceForm.reset();
     // }.bind(this));
+  }
+
+
+  /** PRIVATE METHODS */
+
+  private loadProduct() {
+    this.itemService.getItemById(this.productId).then(response => {
+      if (response.data[0]) {
+        this.product = response.data[0];
+        this.updatePriceForm.get('price').setValue(this.product.selling_price);
+      }
+    });
   }
 
 }

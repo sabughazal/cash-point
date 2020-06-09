@@ -40,7 +40,7 @@ export class ItemLookupComponent implements OnInit {
     if (len) {
       this.loadCategories(this.categoryStack[len-1].parent_category);
       this.loadItems(null, this.categoryStack[len-1].parent_category);
-      this.categoryStack.splice(len-1);
+      this.categoryStack.splice(len-1, 1);
     }
   }
 

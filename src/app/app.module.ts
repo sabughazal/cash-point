@@ -11,6 +11,9 @@ import { SaleComponent } from '../components/sale/sale.component';
 import { NewCustomerComponent } from '../components/new-customer/new-customer.component';
 import { NewSupplierComponent } from '../components/new-supplier/new-supplier.component';
 import { NewItemComponent } from '../components/new-item/new-item.component';
+import { StockCountComponent } from '../components/stock-count/stock-count.component';
+import { ProductPackagesComponent } from '../components/product-packages/product-packages.component';
+import { NewPaymentComponent } from '../components/new-payment/new-payment.component';
 
 import { CustomerPage } from '../pages/customer/customer.page';
 import { SalesPage } from '../pages/sales/sales.page';
@@ -25,8 +28,6 @@ import { ProductPage } from '../pages/product/product.page';
 import { DashboardPage } from '../pages/dashboard/dashboard.page';
 import { ExpensesPage } from '../pages/expenses/expenses.page';
 import { ItemService } from 'src/services/item/item.service';
-import { StockCountComponent } from './stock-count/stock-count.component';
-import { ProductPackagesComponent } from './product-packages/product-packages.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ProductPackagesComponent } from './product-packages/product-packages.co
     DashboardPage,
     ExpensesPage,
     StockCountComponent,
-    ProductPackagesComponent
+    ProductPackagesComponent,
+    NewPaymentComponent
   ],
   imports: [
     NgbModule,
@@ -61,7 +63,9 @@ import { ProductPackagesComponent } from './product-packages/product-packages.co
   entryComponents: [
     NewCustomerComponent,
     NewSupplierComponent,
-    NewItemComponent
+    NewItemComponent,
+    NewPaymentComponent,
+    ProductPackagesComponent
   ],
   providers: [
     HttpClient,

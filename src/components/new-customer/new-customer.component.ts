@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { CustomerService } from 'src/services/customer/customer.service';
 
 @Component({
   selector: 'app-new-customer',
@@ -11,7 +12,11 @@ export class NewCustomerComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) {
+  constructor(
+    public activeModal: NgbActiveModal, 
+    private customerService: CustomerService,
+    private formBuilder: FormBuilder
+  ) {
     this.buildForm();
   }
 
@@ -20,9 +25,10 @@ export class NewCustomerComponent implements OnInit {
   }
 
   onSaveClick(form) {
-    if (!form.valid) return;
-    console.log(form);
-    this.activeModal.dismiss();
+    if (!form.valid) 
+      return;
+    this.customerService.newCustomer(form.value);
+    this.activeModal.close();
   }
 
 

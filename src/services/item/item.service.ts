@@ -26,15 +26,16 @@ export class ItemService {
 		return promise;
   }
 
+
   getItems(query = null, category = null): Promise<any> {
-    var stmt = "SELECT I.*, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     if (query) {
       stmt += ` AND I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%'`;
     }
     if (category) {
       stmt += ` AND I.category = ${category}`;
     }
-    stmt += " ORDER BY I.date_added ASC LIMIT 100;";
+    stmt += " ORDER BY I.date_added DESC LIMIT 100;";
 		let options = {
       params: {
         query: stmt
@@ -44,8 +45,9 @@ export class ItemService {
 		return promise;
   }
 
+
   getItemByBarcode(barcode): Promise<any> {
-    var stmt = "SELECT I.*, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     stmt += ` AND I.barcode	LIKE '%${barcode}%' LIMIT 1;`;
 		let options = {
       params: {
@@ -56,9 +58,23 @@ export class ItemService {
 		return promise;
   }
 
+
   getItemById(id): Promise<any> {
-    var stmt = "SELECT I.*, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     stmt += ` AND I.id = ${id};`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  getPackagesOf(id): Promise<any> {
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    stmt += ` AND I.subitem = ${id} ORDER BY I.subitem_count ASC;`;
 		let options = {
       params: {
         query: stmt

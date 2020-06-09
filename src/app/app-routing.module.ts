@@ -14,7 +14,7 @@ import { ExpensesPage } from 'src/pages/expenses/expenses.page';
 
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/home', pathMatch: 'full'},
+  { path: '',   redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomePage },
   { path: 'customers/:id', component: CustomerPage },
   { path: 'customers', component: CustomersPage },

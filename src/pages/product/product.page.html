@@ -9,6 +9,8 @@
         </div>
         <div class="ml-auto p-2 flex-shrink-1">
             <button type="button" class="btn btn-warning btn-lg" (click)="onPackagesClick()">Packages</button>
+            &nbsp;
+            <button type="button" class="btn btn-warning btn-lg">Stock</button>
         </div>
     </div>
 
@@ -16,7 +18,7 @@
       <div class="form-group">
         <label>Selling Price<span style="color: red">*</span></label>
         <div class="input-group mb-3">
-          <input type="text" min="0" step="0.05" class="form-control" formControlName="price" value="{{ item.price | number: '1.2-2' }}">
+          <input type="text" min="0" step="0.05" class="form-control" formControlName="price">
           <div class="input-group-append">
             <button class="btn btn-success" type="submit">Update</button>
           </div>
@@ -26,7 +28,6 @@
 
     <ul>
         <li>View previous purchases.</li>
-        <li>View parent package items.</li>
         <li>View current stock.</li>
         <li>Update current stock.</li>
     </ul>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { SupplierService } from 'src/services/supplier/supplier.service';
 
 @Component({
   selector: 'app-new-supplier',
@@ -11,18 +12,21 @@ export class NewSupplierComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) {
+  constructor(
+    public activeModal: NgbActiveModal, 
+    private supplierService: SupplierService,
+    private formBuilder: FormBuilder
+  ) { }
+
+  ngOnInit() {
     this.buildForm();
   }
 
-  ngOnInit() {
-    
-  }
-
   onSaveClick(form) {
-    if (!form.valid) return;
-    console.log(form);
-    this.activeModal.dismiss();
+    if (!form.valid) 
+      return;
+    this.supplierService.newSupplier(form.value);
+    this.activeModal.close();
   }
 
 
