@@ -27,8 +27,9 @@ export class NewCustomerComponent implements OnInit {
   onSaveClick(form) {
     if (!form.valid) 
       return;
-    this.customerService.newCustomer(form.value);
-    this.activeModal.close();
+    this.customerService.newCustomer(form.value).then(() => {
+      this.activeModal.close();
+    });
   }
 
 

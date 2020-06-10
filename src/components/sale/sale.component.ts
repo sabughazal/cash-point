@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SaleService } from 'src/services/sale/sale.service';
+import { CustomerLookupComponent } from '../customer-lookup/customer-lookup.component';
 
 @Component({
   selector: 'app-sale',
@@ -11,11 +13,13 @@ export class SaleComponent implements OnInit {
   savedSales: Array<any> = [];
 
   saleItems: Array<any> = [];
+  selectedCustomer: any = null;
   saleTotal: number = 0;
   saleVatAmount: number = 0;
   saleSubtotal: number = 0;
+  selectCustomerModalRef: NgbModalRef;
 
-  constructor(private saleService: SaleService) {
+  constructor(private modalService: NgbModal, private saleService: SaleService) {
     var current = localStorage.getItem('current_sale');
     var saved = localStorage.getItem('saved_sales');
     if (current) {
@@ -32,10 +36,23 @@ export class SaleComponent implements OnInit {
     
   }
 
+  onCustomerSelect(customer) {
+    this.selectedCustomer = customer;
+    if (this.selectCustomerModalRef) {
+      this.selectCustomerModalRef.dismiss();
+    }
+  }
+
+
+  openModal(modal) {
+    this.selectCustomerModalRef = this.modalService.open(modal, {size: 'lg'});
+  }
+
 
   saveSale() {
     let sale = {
       title: `Sale ${this.saleTotal.toFixed(2)}`,
+      customer: this.selectedCustomer,
       items: this.saleItems
     }
     this.savedSales.push(sale);
@@ -46,6 +63,7 @@ export class SaleComponent implements OnInit {
 
   clearSale() {
     this.saleItems = [];
+    this.selectedCustomer = null;
     this.updateSummary();
     this.updateLocalStorage(); 
   }
@@ -53,6 +71,7 @@ export class SaleComponent implements OnInit {
 
   selectSavedSale(index) {
     this.saleItems = this.savedSales[index].items;
+    this.selectedCustomer = this.savedSales[index].customer;
     this.savedSales.splice(index, 1);
     localStorage.setItem('saved_sales', JSON.stringify(this.savedSales));
     this.updateSummary();
@@ -68,17 +87,33 @@ export class SaleComponent implements OnInit {
 
   
   onIncreaseClick(index) {
-    this.saleItems[index].quantity += 1;
+    // prompt for quantity if by weight
+    if (this.saleItems[index].item.by_weight) {
+      var quantity = parseFloat(prompt("Enter Quantity: "));
+      if (!quantity || quantity <= 0) 
+        return;
+      this.saleItems[index].quantity = quantity;
+    } else {
+      this.saleItems[index].quantity += 1;
+    }
     this.updateSummary();
     this.updateLocalStorage(); 
   }
 
 
   onDecreaseClick(index) {
-    if (this.saleItems[index].quantity - 1 <= 0) {
-      this.saleItems.splice(index, 1);
+    // prompt for quantity if by weight
+    if (this.saleItems[index].item.by_weight) {
+      var quantity = parseFloat(prompt("Enter Quantity: "));
+      if (!quantity || quantity <= 0) 
+        return;
+      this.saleItems[index].quantity = quantity;
     } else {
-      this.saleItems[index].quantity -= 1;
+      if (this.saleItems[index].quantity - 1 <= 0) {
+        this.saleItems.splice(index, 1);
+      } else {
+        this.saleItems[index].quantity -= 1;
+      }
     }
     this.updateSummary();
     this.updateLocalStorage(); 
@@ -111,21 +146,32 @@ export class SaleComponent implements OnInit {
       grand_total: this.saleTotal,
       items: this.saleItems,
       type: 'credit',
-      paid: 1
+      paid: 0
     }
-    console.log(sale);
+    this.saleService.newSale(sale, this.selectedCustomer.id).then(() => {
+      this.clearSale();
+    });
   }
   
 
   addItem(item) {
-    var index = this.saleItems.map(el => el.item.id).indexOf(item.id);
+    var quantity = 1;
+    if (item.by_weight) {
+      quantity = parseFloat(prompt("Enter Quantity: "));
+      if (!quantity || quantity <= 0) return;
+    }
 
+    var index = this.saleItems.map(el => el.item.id).indexOf(item.id);
     if (index != -1) {
-      this.saleItems[index].quantity += 1;
+      if (item.by_weight) {
+        this.saleItems[index].quantity = quantity;
+      } else {
+        this.saleItems[index].quantity += quantity;
+      }
     } else {
       this.saleItems.unshift({
         'item': item,
-        'quantity': 1
+        'quantity': quantity
       });
     }
 

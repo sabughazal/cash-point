@@ -12,26 +12,30 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Contact</th>
-                    <th scope="col">Total Credit</th>
-                    <th scope="col">Last Sale</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Customer</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let customer of customers; index as i">
-                    <th scope="row">{{ customer.id }}</th>
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.address }}</td>
-                    <td>{{ customer.contact }}</td>
-                    <td>{{ customer.total_credit | number }}</td>
-                    <td>{{ customer.last_sale | date: 'MMM d, y' }}</td>
+                <tr *ngFor="let sale of currentSales; index as i" [ngClass]="{'text-danger': sale.refund_reference}">
+                    <th scope="row">{{ sale.id }}</th>
+                    <td>{{ sale.ts | date: 'MMM d, y, h:mm:ss a' }}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/customers/'+customer.id]" routerDirection="forward">Refund</button>
-                        <!-- &nbsp; -->
-                        <!-- <button type="button" class="btn btn-outline-danger btn-sm">Delete</button> -->
+                        {{ sale.grand_total | number: '1.2-2' }} 
+                        <span *ngIf="sale.refund_reference">
+                            <small><em>(Refund of #{{ sale.refund_reference }})</em></small>
+                        </span>
+                    </td>
+                    <td>{{ sale.type }}</td>
+                    <td>
+                        <button *ngIf="sale.customer_name" type="button" class="btn btn-link btn-sm" [routerLink]="['/customers/'+sale.customer]" routerDirection="forward">{{ sale.customer_name }}</button>
+                        <span *ngIf="!sale.customer_name">-</span>
+                    </td>
+                    <td>
+                        <button *ngIf="!sale.refund_reference" type="button" class="btn btn-outline-dark btn-sm" (click)="onRefundClick(sale)">Refund</button>
                     </td>
                 </tr>
             </tbody>

@@ -10,7 +10,7 @@
     </div>
 
 
-    <div class="input-group input-group-lg mb-3" style="padding: 2px; width: 100%;">
+    <div class="input-group input-group-lg mb-3 w-100">
         <input #search type="text" placeholder="Search products by Barcode or Name" class="form-control" (input)="onSearchInput($event.target.value)">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>

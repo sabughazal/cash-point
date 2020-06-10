@@ -25,8 +25,9 @@ export class NewSupplierComponent implements OnInit {
   onSaveClick(form) {
     if (!form.valid) 
       return;
-    this.supplierService.newSupplier(form.value);
-    this.activeModal.close();
+    this.supplierService.newSupplier(form.value).then(() => {
+      this.activeModal.close();
+    });
   }
 
 

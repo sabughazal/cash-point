@@ -59,7 +59,7 @@ export class SupplierService {
 
   newSupplier(supplier): Promise<any> {
     var stmt = `INSERT INTO supplier(name, contact, tax_number) 
-    VALUES ('${supplier.name}', '${supplier.contact}', '${supplier.tax_number}')`;
+    VALUES ("${supplier.name}", "${supplier.contact}", "${supplier.tax_number}")`;
 		let options = {
       params: {
         insert: stmt

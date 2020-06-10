@@ -24,7 +24,6 @@ export class ProductPackagesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.product);
     this.loadPackages();
     this.buildForm();
   }

@@ -28,6 +28,8 @@ import { ProductPage } from '../pages/product/product.page';
 import { DashboardPage } from '../pages/dashboard/dashboard.page';
 import { ExpensesPage } from '../pages/expenses/expenses.page';
 import { ItemService } from 'src/services/item/item.service';
+import { RefundSaleComponent } from '../components/refund-sale/refund-sale.component';
+import { CustomerLookupComponent } from '../components/customer-lookup/customer-lookup.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ItemService } from 'src/services/item/item.service';
     ExpensesPage,
     StockCountComponent,
     ProductPackagesComponent,
-    NewPaymentComponent
+    NewPaymentComponent,
+    RefundSaleComponent,
+    CustomerLookupComponent
   ],
   imports: [
     NgbModule,
@@ -65,7 +69,9 @@ import { ItemService } from 'src/services/item/item.service';
     NewSupplierComponent,
     NewItemComponent,
     NewPaymentComponent,
-    ProductPackagesComponent
+    ProductPackagesComponent,
+    CustomerLookupComponent,
+    RefundSaleComponent
   ],
   providers: [
     HttpClient,

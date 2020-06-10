@@ -8,23 +8,49 @@
 <div class="modal-body">
     <form [formGroup]="form">
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="description">Description<span class="text-danger">*</span></label>
           <input type="text" class="form-control" formControlName="description" id="description">
         </div>
         <div class="form-group">
           <label for="category">Category</label>
           <select class="form-control" formControlName="category" id="category">
-            <option value="">None</option>
+            <option value="">(None)</option>
             <option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="barcode">Barcode</label>
-          <input type="text" class="form-control" formControlName="barcode" id="barcode">
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="barcode">Barcode</label>
+            <input type="text" class="form-control" formControlName="barcode" id="barcode">
+          </div>
+          <div class="form-group col">
+            <label for="code">Code</label>
+            <input type="text" class="form-control" formControlName="code" id="code">
+          </div>
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input" formControlName="by_weight" id="by_weight">
-          <label class="form-check-label" for="by_weight">By Kilo (like Vegetables)</label>
+          <label class="form-check-label" for="by_weight"><span class="text-danger">*</span>By Kilo (like Vegetables)</label>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="selling_price">Selling Price<span class="text-danger">*</span> <small>(with VAT)</small></label>
+            <input type="number" step="0.01" min="0" class="form-control" formControlName="selling_price" id="selling_price" (input)="recalculateBasePrice($event.target.value)">
+          </div>
+          <div class="form-group col">
+            <label for="vat_percentage">VAT Percentage<span class="text-danger">*</span></label>
+            <input type="number" step="0.01" min="0" class="form-control" formControlName="vat_percentage" (input)="recalculatePrices()" id="vat_percentage">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="base_price">Base Price<span class="text-danger">*</span> <small>(without VAT)</small></label>
+            <input type="number" step="0.01" min="0" class="form-control" formControlName="base_price" (input)="recalculateSellingPrice($event.target.value)" id="base_price">
+          </div>
+          <div class="form-group col">
+            <label for="vat_amount">VAT Amount</label>
+            <input type="number" step="0.01" min="0" class="form-control" formControlName="vat_amount" id="vat_amount">
+          </div>
         </div>
     </form>
 </div>

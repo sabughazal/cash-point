@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewCustomerComponent } from 'src/components/new-customer/new-customer.component';
 import { CustomerService } from 'src/services/customer/customer.service';
+import { CustomerLookupComponent } from 'src/components/customer-lookup/customer-lookup.component';
 
 
 @Component({
@@ -11,41 +12,19 @@ import { CustomerService } from 'src/services/customer/customer.service';
 })
 export class CustomersPage implements OnInit {
 
+  @ViewChild('customerLookup', {static: false}) customerLookup: CustomerLookupComponent;
   currentCustomers: Array<any> = [];
 
   constructor(private modalService: NgbModal, private customerService: CustomerService) { }
 
   ngOnInit() {
-    this.loadCustomers();
+    
   }
 
   onNewCustomerClick() {
     var ref = this.modalService.open(NewCustomerComponent, { size: 'lg' });
     ref.result.finally(() => {
-      console.log("finally");
-      
-      this.loadCustomers();
-    });
-  }
-
-  onSearchInput(query) {
-    if (query == '') {
-      this.onSearchClearClick();
-      return;
-    }
-    this.loadCustomers(query);
-  }
-
-  onSearchClearClick() {
-    this.loadCustomers();
-  }
-  
-
-  /** PRIVATE METHODS */
-
-  private loadCustomers(query = null) {
-    this.customerService.getCustomers(query).then(response => {
-      this.currentCustomers = response.data;
+      this.customerLookup.reload();
     });
   }
 

@@ -11,6 +11,6 @@
     border-bottom: 1px solid lightgray;
 }
 
-.btn-group {
+#paymentButtons {
     height: 100px;
 }
