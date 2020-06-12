@@ -11,7 +11,9 @@ export class SupplierService {
 
 
   getSuppliers(query = null): Promise<any> {
-    var stmt = "SELECT * FROM supplier AS S WHERE 1=1";
+    var stmt = `SELECT S.*, 
+        ((SELECT SUM(P.grand_total) FROM purchase as P WHERE P.supplier=S.id) - (SELECT SUM(PY.amount) FROM purchase_payment AS PY JOIN purchase AS P ON PY.purchase=P.id WHERE P.supplier=S.id)) AS total_credit 
+    FROM supplier AS S WHERE 1=1`;
     if (query) {
       stmt += ` AND S.name LIKE '%${query}%' OR S.contact LIKE '%${query}%' OR S.tax_number LIKE '%${query}%'`;
     }

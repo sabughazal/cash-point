@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_ENDPOINT as endpoint } from '../../constants';
 import { CustomerService } from '../customer/customer.service';
+import { API_ENDPOINT as endpoint } from '../../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,7 @@ export class SaleService {
     });
 		return promise;
   }
+
 
   getSaleItems(saleId): Promise<any> {
     var stmt = `SELECT SI.*, I.description AS description, I.by_weight as by_weight, 
@@ -90,6 +91,7 @@ export class SaleService {
     });
   }
 
+
   newSaleRefund(reference, refund, customer = null): Promise<any> {
     return new Promise((resolve, reject) => {
       var values = [
@@ -106,6 +108,7 @@ export class SaleService {
       ];
       var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type, paid, date_paid, refund_reference) 
       VALUES (${values.join(',')})`;
+      
       let options = {
         params: {
           insert: stmt

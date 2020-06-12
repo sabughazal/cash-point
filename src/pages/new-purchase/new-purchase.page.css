@@ -9,5 +9,11 @@
 
 .purchase-item {
     padding: 5px 0px;
+    border-right: 1px dashed lightgrey;
+    border-left: 1px dashed lightgrey;
     border-bottom: 1px dashed lightgrey;
+}
+
+.short-input {
+    width: 5%;
 }

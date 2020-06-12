@@ -9,7 +9,7 @@
                 <button *ngFor="let sale of savedSales; index as i" (click)="selectSavedSale(i)" ngbDropdownItem>{{ sale.title }}</button>
             </div>
         </div>
-        <button type="button" class="btn btn-secondary btn-lg" [disabled]="!saleTotal" (click)="saveSale()">Save</button>
+        <button type="button" class="btn btn-secondary btn-lg" [disabled]="!saleItems.length" (click)="saveSale()">Save</button>
         <button type="button" class="btn btn-danger btn-lg ml-1" (click)="clearSale()">del</button>
 
     </div>
@@ -76,8 +76,8 @@
 
     <div class="p-2 mt-auto">
         <div class="btn-group btn-group-lg btn-block" role="group" id="paymentButtons">
-            <button type="button" class="btn btn-success btn-lg" [disabled]="!saleTotal" (click)="onCashClick()">Cash</button>
-            <button type="button" class="btn btn-secondary btn-lg" [disabled]="!(saleTotal && selectedCustomer)" (click)="onCreditClick()">Credit</button>
+            <button type="button" class="btn btn-success btn-lg" [disabled]="!saleItems.length" (click)="onCashClick()">Cash</button>
+            <button type="button" class="btn btn-secondary btn-lg" [disabled]="!(saleItems.length && selectedCustomer)" (click)="onCreditClick()">Credit</button>
         </div>
     </div>
 </div>

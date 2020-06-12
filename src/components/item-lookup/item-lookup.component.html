@@ -1,12 +1,12 @@
 <div #container class="d-flex flex-wrap align-content-start flex-wrap" id="container">
 
-    <div class="input-group input-group-lg" style="padding: 2px" [ngStyle]="{'width.px': (container.offsetWidth - 30)}">
+    <div class="input-group input-group-lg" style="padding: 2px; width: calc(100% - 30px);">
         <input #search type="text" placeholder="Search by Barcode or Name" class="form-control" (input)="onSearchInput($event.target.value)">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>
         </div>
     </div>
-    <div class="input-group" style="padding: 2px" [ngStyle]="{'width.px': (container.offsetWidth - 30)}">
+    <div class="input-group" style="padding: 2px; width: calc(100% - 30px);">
         <input type="text" placeholder="Barcode Scanner" class="form-control" (change)="onBarcodeInput($event)">
     </div>
 

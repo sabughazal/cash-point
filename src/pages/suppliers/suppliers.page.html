@@ -28,7 +28,7 @@
                     <td>{{ supplier.name }}</td>
                     <td>{{ supplier.contact }}</td>
                     <td>{{ supplier.tax_number }}</td>
-                    <td>{{ supplier.total_credit | number: '1.2-2' }}</td>
+                    <td>{{ supplier.total_credit ? supplier.total_credit : 0 | number: '1.2-2' }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/suppliers/'+supplier.id]" routerDirection="forward">View</button>
                     </td>
