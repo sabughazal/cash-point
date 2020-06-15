@@ -11,7 +11,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class ProductPackagesComponent implements OnInit {
 
   @Input() product: any;
-  packages: Array<any> = [1,2,3,4,5,6,7,8,9,0];
+  packages: Array<any> = [];
   selectItemModalRef: NgbModalRef;
   selectedItem: any;
   form: FormGroup;
@@ -30,6 +30,11 @@ export class ProductPackagesComponent implements OnInit {
 
   onSubmit(form) {
     console.log(form.value);
+    this.itemService.newPackageOf(form.value.subitem, form.value.item, form.value.subitem_count).then(response => {
+      this.form.reset();
+      this.selectedItem = null;
+      this.activeModal.close();
+    });
   }
 
   onPackageItemSelect(packageItem) {

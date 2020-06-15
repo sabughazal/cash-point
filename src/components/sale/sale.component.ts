@@ -70,6 +70,9 @@ export class SaleComponent implements OnInit {
 
 
   selectSavedSale(index) {
+    if (this.saleItems.length) {
+      this.saveSale();
+    }
     this.saleItems = this.savedSales[index].items;
     this.selectedCustomer = this.savedSales[index].customer;
     this.savedSales.splice(index, 1);
@@ -88,7 +91,7 @@ export class SaleComponent implements OnInit {
   
   onIncreaseClick(index) {
     // prompt for quantity if by weight
-    if (this.saleItems[index].item.by_weight) {
+    if (this.saleItems[index].item.by_weight === "1") {
       var quantity = parseFloat(prompt("Enter Quantity: "));
       if (!quantity || quantity <= 0) 
         return;
@@ -103,7 +106,7 @@ export class SaleComponent implements OnInit {
 
   onDecreaseClick(index) {
     // prompt for quantity if by weight
-    if (this.saleItems[index].item.by_weight) {
+    if (this.saleItems[index].item.by_weight === "1") {
       var quantity = parseFloat(prompt("Enter Quantity: "));
       if (!quantity || quantity <= 0) 
         return;
@@ -128,8 +131,7 @@ export class SaleComponent implements OnInit {
       total_vat: this.saleVatAmount,
       grand_total: this.saleTotal,
       items: this.saleItems,
-      type: 'cash',
-      paid: 1
+      type: 'cash'
     }
     this.saleService.newSale(sale, null).then(() => {
       this.clearSale();
@@ -145,8 +147,7 @@ export class SaleComponent implements OnInit {
       total_vat: this.saleVatAmount,
       grand_total: this.saleTotal,
       items: this.saleItems,
-      type: 'credit',
-      paid: 0
+      type: 'credit'
     }
     this.saleService.newSale(sale, this.selectedCustomer.id).then(() => {
       this.clearSale();
@@ -156,14 +157,14 @@ export class SaleComponent implements OnInit {
 
   addItem(item) {
     var quantity = 1;
-    if (item.by_weight) {
+    if (item.by_weight === "1") {
       quantity = parseFloat(prompt("Enter Quantity: "));
       if (!quantity || quantity <= 0) return;
     }
 
     var index = this.saleItems.map(el => el.item.id).indexOf(item.id);
     if (index != -1) {
-      if (item.by_weight) {
+      if (item.by_weight === "1") {
         this.saleItems[index].quantity = quantity;
       } else {
         this.saleItems[index].quantity += quantity;

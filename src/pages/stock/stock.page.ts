@@ -21,7 +21,10 @@ export class StockPage implements OnInit {
   }
 
   onNewItemClick() {
-    this.modalService.open(NewItemComponent, { size: 'lg' });
+    var ref = this.modalService.open(NewItemComponent, { size: 'lg' });
+    ref.result.finally(() => {
+      this.loadItems();
+    });
   }
 
   onSearchInput(query) {

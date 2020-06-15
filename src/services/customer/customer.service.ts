@@ -18,7 +18,7 @@ export class CustomerService {
     if (query) {
       stmt += ` AND C.name LIKE "%${query}%" OR C.address LIKE "%${query}%" OR C.contact LIKE "%${query}%"`;
     }
-    stmt += " ORDER BY C.date_added DESC LIMIT 100;";
+    stmt += " ORDER BY last_sale DESC LIMIT 100;";
 		let options = {
       params: {
         query: stmt

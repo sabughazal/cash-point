@@ -1,1 +1,80 @@
-<p>stock-count works!</p>
+<div class="modal-header">
+    <ul ngbNav #nav="ngbNav" class="nav nav-fill" style="width: 100%;">
+
+        <li ngbNavItem>
+            <a ngbNavLink>Stock Count</a>
+            <ng-template ngbNavContent>
+                <div class="d-flex flex-column">
+                    <div class="p-4 text-center">
+                        <h4 class="display-3">{{ currentStock | number: '1.0-4' }}</h4>
+                        <p>Stock in System</p>
+                    </div>
+                    <div class="p-2">
+                        <form [formGroup]="updateStockForm" (ngSubmit)="onUpdateStockFormSubmit(updateStockForm)">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="number" min="0" class="form-control" placeholder="Counted Stock" formControlName="counted_quantity">
+                              <div class="input-group-append">
+                                <button class="btn btn-success" type="submit">Update</button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </ng-template>
+        </li>
+
+        <li ngbNavItem>
+            <a ngbNavLink>Count History</a>
+            <ng-template ngbNavContent>
+                <div style="max-height: 600px; overflow-y: auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">System Quantity</th>
+                                <th scope="col">Counted Quantity</th>
+                                <th scope="col">Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let stockCount of stockCounts; index as i">
+                                <td>{{ stockCount.ts | date: 'MMM d, y, h:mm:ss a'}}</td>
+                                <td>{{ stockCount.calculated_quantity | number: '1.0-4' }}</td>
+                                <td [ngClass]="{'text-danger': stockCount.difference < 0, 'text-success': stockCount.difference > 0}">
+                                    {{ stockCount.counted_quantity | number: '1.0-4' }}
+                                </td>
+                                <td>{{ stockCount.difference | number: '1.0-4' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="d-flex justify-content-center p-5 w-100">
+                    <div *ngIf="!form.get('item').valid" class="align-self-center">
+                        <button type="submit" class="btn btn-outline-secondary" (click)="openModal(itemLookupModal)">Select Item</button>
+                    </div>
+                    <div *ngIf="form.get('item').valid" class="align-self-center text-center">
+                        <h4>{{ selectedItem.description }}</h4>
+                        <p><em>{{ selectedItem.barcode }}</em></p>
+                        <button type="submit" class="btn btn-outline-primary" (click)="changeSelectedItem()">Change</button>
+                    </div>
+                </div>
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                    <div class="form-group">
+                      <label for="subitem_count">Number of Items Inside</label>
+                      <input type="number" step="1" class="form-control" formControlName="subitem_count" id="subitem_count">
+                    </div>
+                    <button type="submit" class="btn btn-success">Save New Package</button>
+                </form> -->
+            </ng-template>
+        </li>
+    </ul>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div [ngbNavOutlet]="nav"></div>
+</div>

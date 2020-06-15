@@ -12,8 +12,8 @@
                 <div *ngIf="packages.length" class="list-group" style="height: 300px; overflow-y: auto;">
                     <a *ngFor="let product of packages" class="list-group-item">
                         <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">{{ product.description }}</h6>
-                            <small>Price: {{ product.selling_price | number: '1.2-2' }} ({{ product.subitem_count }} pieces)</small>
+                            <h5 class="mb-1">{{ product.description }}</h5>
+                            <p>Price: {{ product.selling_price | number: '1.2-2' }} ({{ product.subitem_count }} pieces)</p>
                         </div>
                         <p>
                             <em>{{ product.barcode }}</em>
@@ -54,10 +54,6 @@
 <div class="modal-body">
     <div [ngbNavOutlet]="nav"></div>
 </div>
-
-<!-- <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Close</button>
-</div> -->
 
 
 

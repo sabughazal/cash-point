@@ -30,6 +30,8 @@ import { ExpensesPage } from '../pages/expenses/expenses.page';
 import { ItemService } from 'src/services/item/item.service';
 import { RefundSaleComponent } from '../components/refund-sale/refund-sale.component';
 import { CustomerLookupComponent } from '../components/customer-lookup/customer-lookup.component';
+import { NewExpenseComponent } from '../components/new-expense/new-expense.component';
+import { StockAdjustmentComponent } from '../components/stock-adjustment/stock-adjustment.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { CustomerLookupComponent } from '../components/customer-lookup/customer-
     ProductPackagesComponent,
     NewPaymentComponent,
     RefundSaleComponent,
-    CustomerLookupComponent
+    CustomerLookupComponent,
+    NewExpenseComponent,
+    StockAdjustmentComponent
   ],
   imports: [
     NgbModule,
@@ -71,6 +75,8 @@ import { CustomerLookupComponent } from '../components/customer-lookup/customer-
     NewPaymentComponent,
     ProductPackagesComponent,
     CustomerLookupComponent,
+    StockAdjustmentComponent,
+    StockCountComponent,
     RefundSaleComponent
   ],
   providers: [

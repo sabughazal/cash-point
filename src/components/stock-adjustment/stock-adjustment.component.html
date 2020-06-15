@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Stock Adjustment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="d-flex justify-content-between align-items-center text-center" style="height: 170px;">
+        <div class="p-2 w-50" style="height: 100%">
+            <div class="d-flex flex-column" style="height: 100%">
+                <div class="p-2 mt-auto">
+                    <img src="assets/icons/remove.png" width="36" (click)="onDecreaseClick(i)">
+                    <span class="p-3 display-4"><b>{{ adjustQuantity }}</b></span>
+                    <img src="assets/icons/add.png" width="36" (click)="onIncreaseClick(i)">
+                </div>
+                <div class="p-2 mt-auto">
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-2 flex-shrink-1">
+            <img src="assets/icons/back.png" width="100px" style="transform: rotate(180deg);">
+        </div>
+        <div class="p-2 w-50" style="height: 100%">
+            <div class="d-flex flex-column" style="height: 100%">
+                <div class="p-2">
+                    <h4 class="display-4">{{ adjustQuantity * product.subitem_count }}</h4>
+                </div>
+                <div class="p-2 mt-auto">
+                    <p *ngIf="subProduct">{{ subProduct.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()" [disabled]="true">Save</button>
+</div>

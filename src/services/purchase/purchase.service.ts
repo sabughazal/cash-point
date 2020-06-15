@@ -22,11 +22,9 @@ export class PurchaseService {
         purchase.total_vat,
         purchase.grand_total,
         `'${purchase.type}'`,
-        purchase.paid,
-        purchase.date_paid,
         `'${purchase.note}'`
       ];
-      var stmt = `INSERT INTO purchase(supplier, external_document, purchase_date, subtotal, total_discount, net_amount, total_vat, grand_total, type, paid, date_paid, note) 
+      var stmt = `INSERT INTO purchase(supplier, external_document, purchase_date, subtotal, total_discount, net_amount, total_vat, grand_total, type, note) 
       VALUES (${values.join(',')})`;
 
       let options = {
@@ -36,6 +34,9 @@ export class PurchaseService {
       };
       this.http.get(endpoint, options).toPromise().then((response: any) => {
         var promises = [];
+        if (purchase.type == 'cash') {
+          promises.push(this.newPurchasePayment(response.insert_id, purchase.grand_total));
+        }
         if (response.result) {
           for (let i = 0; i < purchase.items.length; i++) {
             promises.push(this.newPurchaseItem(response.insert_id, purchase.items[i]));            
@@ -44,6 +45,29 @@ export class PurchaseService {
         Promise.all(promises).then(resolve).catch(reject);
       });
     });
+  }
+
+
+  getPurchasePayments(purchaseId): Promise<any> {
+    var stmt = `SELECT * FROM purchase_payment AS PY WHERE PY.purchase=${purchaseId} ORDER BY PY.ts DESC;`
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  newPurchasePayment(purchaseId, amount): Promise<any> {
+    var stmt = `INSERT INTO purchase_payment(purchase, amount) VALUES (${purchaseId}, ${amount});`;
+    let options = {
+      params: {
+        insert: stmt
+      }
+    };
+    return this.http.get(endpoint, options).toPromise();
   }
 
 

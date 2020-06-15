@@ -84,18 +84,15 @@ export class NewPurchasePage implements OnInit {
         purchase.net_amount = this.subtotal - this.totalDiscount;
         purchase.total_vat = this.totalVat;
         purchase.grand_total = this.grandTotal;
-        purchase.paid = (purchase.type == 'cash') ? 1 : 0;
-        purchase.date_paid = purchase.paid ? 'NOW()' : 'NULL';
         purchase.note = "None";
         purchase.items = this.purchaseItems.map(el => {
           el.form.get('net_amount').setValue(el.form.value.base_cost - el.form.value.discount);
           return el.form.value;
         });
 
-        this.purchaseService.newPurchase(purchase, this.supplierId).then(response => {
-          if (response.result) {
-            this.location.back();
-          }
+        this.purchaseService.newPurchase(purchase, this.supplierId).then(() => {
+          this.clearPurchase();
+          this.location.back();
         });
       }
     }
@@ -131,7 +128,7 @@ export class NewPurchasePage implements OnInit {
     this.totalDiscount = 0;
     this.totalVat = 0;
     this.grandTotal = 0;
-
+    
     for (let i = 0; i < this.purchaseItems.length; i++) {
       let baseCost = parseFloat(this.purchaseItems[i].form.value.base_cost);
       let vatAmount = parseFloat(this.purchaseItems[i].form.value.vat_amount);
@@ -139,17 +136,15 @@ export class NewPurchasePage implements OnInit {
       let type = this.purchaseItems[i].form.value.type;
       
       if (type == 'purchase') {
-        this.subtotal += baseCost;
-        this.totalVat += vatAmount;
-        this.grandTotal += totalCost;
+        this.subtotal += (baseCost ? baseCost : 0);
+        this.totalVat += (vatAmount ? vatAmount : 0);
+        this.grandTotal += (totalCost ? totalCost : 0);
       } else {
-        this.subtotal -= baseCost;
-        this.totalVat -= vatAmount;
-        this.grandTotal -= totalCost;
+        this.subtotal -= (baseCost ? baseCost : 0);
+        this.totalVat -= (vatAmount ? vatAmount : 0);
+        this.grandTotal -= (totalCost ? totalCost : 0);
       }
     }
-
-    this.updateLocalStorage();
   }
 
 
@@ -164,12 +159,12 @@ export class NewPurchasePage implements OnInit {
     var form = this.formBuilder.group({
       id: new FormControl(item.id, Validators.required),
       quantity: new FormControl(null, Validators.compose([Validators.required, Validators.min(0.01)])),
-      base_cost: new FormControl(null, Validators.required),
-      discount: new FormControl(0, Validators.required),
+      base_cost: new FormControl(null, Validators.compose([Validators.required, Validators.min(0)])),
+      discount: new FormControl(0, Validators.compose([Validators.required, Validators.min(0)])),
       net_amount: new FormControl(null),
-      vat_amount: new FormControl(null, Validators.required),
-      vat_percentage: new FormControl(this.defaultVatPercent, Validators.required),
-      total_cost: new FormControl(null, Validators.required),
+      vat_amount: new FormControl(null, Validators.compose([Validators.required, Validators.min(0)])),
+      vat_percentage: new FormControl(this.defaultVatPercent, Validators.compose([Validators.required, Validators.min(0)])),
+      total_cost: new FormControl(null, Validators.compose([Validators.required, Validators.min(0)])),
       type: new FormControl('purchase', Validators.required)
     });
     return form;
@@ -213,6 +208,14 @@ export class NewPurchasePage implements OnInit {
   
       this.recalculateTotals();
     }
+  }
+
+
+  private clearPurchase() {
+    this.purchaseItems = [];
+    this.purchaseForm.reset();
+    this.recalculateTotals();
+    this.updateLocalStorage();
   }
 
 }

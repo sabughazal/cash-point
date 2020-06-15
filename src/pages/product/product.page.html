@@ -1,16 +1,18 @@
 <div id="container" class="d-flex flex-column">
 
-    <div class="d-flex align-items-center mb-3" id="header">
+    <div *ngIf="product" class="d-flex align-items-center mb-3" id="header">
         <div class="p-3" style="cursor: pointer;" routerLink="../.." routerDirection="back">
             <img src="assets/icons/back-64.png" width="64">
         </div>
         <div class="p-2">
-            <h1 *ngIf="product" class="display-4">{{ product.description }}</h1>
+            <h1 class="display-4">{{ product.description }}</h1>
         </div>
         <div class="ml-auto p-2 flex-shrink-1">
             <button type="button" class="btn btn-warning btn-lg" (click)="onPackagesClick()">Packages</button>
             &nbsp;
-            <button type="button" class="btn btn-warning btn-lg">Stock</button>
+            <button type="button" class="btn btn-warning btn-lg" (click)="onCountClick()">Count</button>
+            &nbsp;
+            <button *ngIf="product.subitem" type="button" class="btn btn-warning btn-lg" (click)="onAdjustClick()">Adjust</button>
         </div>
     </div>
 
@@ -26,9 +28,27 @@
       </div>
     </form>
 
-    <ul>
-        <li>View previous purchases.</li>
-        <li>View current stock.</li>
-        <li>Update current stock.</li>
-    </ul>
+    <div class="flex-fill" style="overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Cost Per Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let purchase of purchases; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
+                    <td>{{ purchase.quantity | number: '1.0-4' }}</td>
+                    <td>{{ purchase.total_cost | number: '1.2-2' }}</td>
+                    <td>{{ purchase.total_cost / purchase.quantity | number: '1.2-2' }} / <small>Unit</small></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
 </div>

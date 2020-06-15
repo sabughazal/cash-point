@@ -65,11 +65,9 @@ export class SaleService {
         sale.total_vat,
         sale.grand_total,
         customer ? customer : 'NULL',
-        `'${sale.type}'`,
-        sale.type == 'cash' ? 1 : 0,
-        sale.type == 'cash' ? 'NOW()' : 'NULL'
+        `'${sale.type}'`
       ];
-      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type, paid, date_paid) 
+      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type) 
       VALUES (${values.join(',')})`;
       let options = {
         params: {
@@ -102,11 +100,9 @@ export class SaleService {
         refund.grand_total,
         customer ? customer : 'NULL',
         `'${refund.type}'`,
-        1, 
-        'NOW()',
         reference
       ];
-      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type, paid, date_paid, refund_reference) 
+      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type, refund_reference) 
       VALUES (${values.join(',')})`;
       
       let options = {

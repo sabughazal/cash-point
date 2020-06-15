@@ -30,7 +30,7 @@ export class ItemService {
   getItems(query = null, category = null): Promise<any> {
     var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     if (query) {
-      stmt += ` AND I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%'`;
+      stmt += ` AND I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%' OR I.code LIKE '%${query}%'`;
     }
     if (category) {
       stmt += ` AND I.category = ${category}`;
@@ -69,7 +69,7 @@ export class ItemService {
 
 
   getItemById(id): Promise<any> {
-    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     stmt += ` AND I.id = ${id};`;
 		let options = {
       params: {
@@ -82,8 +82,21 @@ export class ItemService {
 
 
   getPackagesOf(id): Promise<any> {
-    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     stmt += ` AND I.subitem = ${id} ORDER BY I.subitem_count ASC;`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  getPurchasesOf(id): Promise<any> {
+    var stmt = "SELECT PI.*, P.ts FROM purchase_item AS PI JOIN purchase AS P ON PI.purchase=P.id WHERE 1=1";
+    stmt += ` AND PI.item = ${id} ORDER BY P.ts DESC;`;
 		let options = {
       params: {
         query: stmt
@@ -119,9 +132,69 @@ export class ItemService {
     });
   }
 
+
+  newPackageOf(subItemId, packageItemId, count) {
+    var stmt = `UPDATE item SET subitem=${subItemId}, subitem_count=${count} WHERE id=${packageItemId};`;
+    let options = {
+      params: {
+        update: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
   
   updateItemPrice(itemId, base, vat_percent, vat, selling): Promise<any> {
     return this.newItemPrice(itemId, base, vat_percent, vat, selling);
+  }
+
+
+  newItemStockCount(id, countedQuantity): Promise<any> {
+    var stmt = `CALL new_item_count(${id}, ${countedQuantity}, 'Physical count.');`;
+    let options = {
+      params: {
+        update: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  adjustItemStock(id, adjustQuantity): Promise<any> {
+    var stmt = `CALL adjust_item_stock(${id}, ${adjustQuantity});`;
+    let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  getCurrentStockOf(id): Promise<any> {
+    var stmt = `CALL get_stock_count(${id}, @stock_count);`;
+    let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
+  getStockCountsOf(id): Promise<any> {
+    var stmt = `SELECT * FROM stock_count AS C WHERE C.item = ${id} ORDER BY C.ts DESC;`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
   }
 
 
@@ -129,7 +202,7 @@ export class ItemService {
 
   private newItemPrice(itemId, base, vat_percent, vat, selling): Promise<any> {
     var stmt = `INSERT INTO price(item, base_price, vat_percentage, vat_amount, selling_price) 
-    VALUES (${[itemId, base, vat_percent, vat, selling].join(',')})`;
+    VALUES (${[itemId, base, vat_percent, vat, selling].join(',')});`;
     let options = {
       params: {
         insert: stmt

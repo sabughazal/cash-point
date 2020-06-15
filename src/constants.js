@@ -1,3 +1,3 @@
 
 
-export const API_ENDPOINT = "http://localhost/cashpoint/index.php";
+export const API_ENDPOINT = "http://localhost/cashpoint/database.php";

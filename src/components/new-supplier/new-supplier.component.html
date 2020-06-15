@@ -8,15 +8,15 @@
 <div class="modal-body">
     <form [formGroup]="form">
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="name">Name<span class="text-danger">*</span></label>
           <input type="text" class="form-control" formControlName="name" id="name">
         </div>
         <div class="form-group">
-          <label for="tax_number">Tax Registration Number (TRN)</label>
+          <label for="tax_number">Tax Registration Number (TRN)<span class="text-danger">*</span></label>
           <input type="number" class="form-control" formControlName="tax_number" id="tax_number">
         </div>
         <div class="form-group">
-          <label for="contact">Contact</label>
+          <label for="contact">Contact<span class="text-danger">*</span></label>
           <input type="text" class="form-control" formControlName="contact" id="contact">
         </div>
     </form>

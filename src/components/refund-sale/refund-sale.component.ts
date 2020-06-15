@@ -35,7 +35,7 @@ export class RefundSaleComponent implements OnInit {
       return;
       
     // prompt for quantity if by weight
-    if (this.items[index].by_weight) {
+    if (this.items[index].by_weight === "1") {
       var remaining = Math.round((this.items[index].quantity - this.items[index].refunded) * 100) / 100;
       var quantity = parseFloat(prompt("Enter Quantity: "));
       if ((!quantity && quantity != 0) || quantity < 0 || quantity > remaining) 
@@ -54,7 +54,7 @@ export class RefundSaleComponent implements OnInit {
       return;
 
     // prompt for quantity if by weight
-    if (this.items[index].by_weight) {
+    if (this.items[index].by_weight === "1") {
       var quantity = parseFloat(prompt("Enter Quantity: "));
       if ((!quantity && quantity != 0) || quantity < 0 || quantity > remaining) 
         return;

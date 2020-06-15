@@ -41,6 +41,7 @@ export class CustomerPage implements OnInit {
     var ref = this.modalService.open(RefundSaleComponent, { size: 'md' });
     ref.componentInstance.saleId = saleId;
     ref.result.finally(() => {
+      this.loadCustomer(this.customerId);
       this.loadTransactions();
     });
   }

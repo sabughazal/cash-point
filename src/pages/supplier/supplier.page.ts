@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SupplierService } from 'src/services/supplier/supplier.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewPaymentComponent } from 'src/components/new-payment/new-payment.component';
+import { PurchaseService } from 'src/services/purchase/purchase.service';
 
 @Component({
   selector: 'app-supplier',
@@ -15,10 +16,12 @@ export class SupplierPage implements OnInit {
   supplier: any;
   purchases: Array<any> = [];
   selectedPurchase: any;
+  currentPayments: Array<any> = [];
 
   constructor(
     private modalService: NgbModal, 
     private route: ActivatedRoute, 
+    private purchaseService: PurchaseService,
     private supplierService: SupplierService
   ) {
     this.supplierId = this.route.snapshot.paramMap.get('id')
@@ -30,12 +33,15 @@ export class SupplierPage implements OnInit {
 
   viewPurchasePayments(purchase) {
     this.selectedPurchase = purchase;
+    this.loadPayments(purchase.id);
   }
 
   onNewPaymentClick() {
-    var ref = this.modalService.open(NewPaymentComponent, { size: 'lg' });
+    var ref = this.modalService.open(NewPaymentComponent, { size: 'sm' });
+    ref.componentInstance.purchase = this.selectedPurchase;
     ref.result.finally(() => {
-      this.viewPurchasePayments(this.selectedPurchase.id);
+      this.loadSupplier();
+      this.viewPurchasePayments(this.selectedPurchase);
     });
   }
 
@@ -48,11 +54,18 @@ export class SupplierPage implements OnInit {
     });
     this.supplierService.getSupplierPurchases(this.supplierId).then(response => {
       this.purchases = response.data;
+      if (this.selectedPurchase) {
+        this.selectedPurchase = this.purchases.find(el => {
+          return el.id == this.selectedPurchase.id;
+        });
+      }
     });
   }
 
   private loadPayments(purchaseId) {
-
+    this.purchaseService.getPurchasePayments(purchaseId).then(response => {
+      this.currentPayments = response.data;
+    });
   }
 
 }
