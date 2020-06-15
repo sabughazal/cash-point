@@ -44,7 +44,7 @@ export class ItemService {
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
       response.data.map(el => {
-        el.by_weight = (el.by_weight == '1') ? true : false;
+        // el.by_weight = (el.by_weight == '1') ? true : false;
         el.base_price = parseFloat(el.base_price);
         el.selling_price = parseFloat(el.selling_price);
         el.vat_amount = parseFloat(el.vat_amount);
@@ -64,6 +64,15 @@ export class ItemService {
       }
     };
     var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      response.data.map(el => {
+        // el.by_weight = (el.by_weight == '1') ? true : false;
+        el.base_price = parseFloat(el.base_price);
+        el.selling_price = parseFloat(el.selling_price);
+        el.vat_amount = parseFloat(el.vat_amount);
+      });
+      return response;
+    });
 		return promise;
   }
 
@@ -77,6 +86,15 @@ export class ItemService {
       }
     };
     var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      response.data.map(el => {
+        // el.by_weight = (el.by_weight == '1') ? true : false;
+        el.base_price = parseFloat(el.base_price);
+        el.selling_price = parseFloat(el.selling_price);
+        el.vat_amount = parseFloat(el.vat_amount);
+      });
+      return response;
+    });
 		return promise;
   }
 
