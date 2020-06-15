@@ -65,4 +65,9 @@ export class StockCountComponent implements OnInit {
     });
   }
 
+  private _confirm(msg) {
+    var confirm = confirm(msg);
+    return confirm;
+  }
+
 }

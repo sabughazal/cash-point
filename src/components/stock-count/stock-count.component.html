@@ -10,13 +10,14 @@
                         <p>Stock in System</p>
                     </div>
                     <div class="p-2">
-                        <form [formGroup]="updateStockForm" (ngSubmit)="onUpdateStockFormSubmit(updateStockForm)">
+                        <form [formGroup]="updateStockForm">
                           <div class="form-group">
+                            <label for="counted_quantity">Counted Stock</label>
                             <div class="input-group">
-                              <input type="number" min="0" class="form-control" placeholder="Counted Stock" formControlName="counted_quantity">
-                              <div class="input-group-append">
-                                <button class="btn btn-success" type="submit">Update</button>
-                              </div>
+                                <input type="number" min="0" class="form-control" placeholder="Counted Stock" formControlName="counted_quantity">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="button" (click)="onUpdateStockFormSubmit(updateStockForm)">Update</button>
+                                </div>
                             </div>
                           </div>
                         </form>
@@ -50,23 +51,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- <div class="d-flex justify-content-center p-5 w-100">
-                    <div *ngIf="!form.get('item').valid" class="align-self-center">
-                        <button type="submit" class="btn btn-outline-secondary" (click)="openModal(itemLookupModal)">Select Item</button>
-                    </div>
-                    <div *ngIf="form.get('item').valid" class="align-self-center text-center">
-                        <h4>{{ selectedItem.description }}</h4>
-                        <p><em>{{ selectedItem.barcode }}</em></p>
-                        <button type="submit" class="btn btn-outline-primary" (click)="changeSelectedItem()">Change</button>
-                    </div>
-                </div>
-                <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-                    <div class="form-group">
-                      <label for="subitem_count">Number of Items Inside</label>
-                      <input type="number" step="1" class="form-control" formControlName="subitem_count" id="subitem_count">
-                    </div>
-                    <button type="submit" class="btn btn-success">Save New Package</button>
-                </form> -->
             </ng-template>
         </li>
     </ul>
