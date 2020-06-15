@@ -10,17 +10,21 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th *ngIf="allowView || allowSelect" scope="col"></th>
                     <th scope="col">Name</th>
                     <th scope="col">Address</th>
                     <th scope="col">Contact</th>
                     <th scope="col">Total Credit</th>
                     <th scope="col">Last Sale</th>
-                    <th *ngIf="allowView || allowSelect" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let customer of currentCustomers; index as i">
                     <th scope="row">{{ i + 1 }}</th>
+                    <td *ngIf="allowView || allowSelect">
+                        <button *ngIf="allowView" type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/customers/'+customer.id]" routerDirection="forward">View</button>
+                        <button *ngIf="allowSelect" type="button" class="btn btn-outline-dark btn-sm" (click)="onSelectClick(customer)">Select</button>
+                    </td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.address }}</td>
                     <td>{{ customer.contact }}</td>
@@ -28,10 +32,6 @@
                     <td [ngClass]="{'text-danger': isOldCredit(customer.total_credit, customer.last_sale)}">
                         <span *ngIf="isOldCredit(customer.total_credit, customer.last_sale)" class="badge badge-danger">!</span> 
                         {{ customer.last_sale | date: 'MMM d, y' }}
-                    </td>
-                    <td *ngIf="allowView || allowSelect">
-                        <button *ngIf="allowView" type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/customers/'+customer.id]" routerDirection="forward">View</button>
-                        <button *ngIf="allowSelect" type="button" class="btn btn-outline-dark btn-sm" (click)="onSelectClick(customer)">Select</button>
                     </td>
                 </tr>
             </tbody>
