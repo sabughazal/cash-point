@@ -1,0 +1,40 @@
+<div class="d-flex align-items-center sale-item">
+    <div class="p-2 delete-button" (click)="onDeleteClick()">
+        <img src="assets/icons/criss-cross.png" width="22">
+    </div>
+    <div class="text-nowrap p-2 w-100" style="overflow: hidden; text-overflow: ellipsis;">{{ item.item.description  }}</div>
+    <div class="p-2 flex-shrink-1">
+        <img src="assets/icons/remove.png" width="36" (click)="onDecreaseClick()">
+    </div>
+    <div class="p-2 flex-shrink-1 text-nowrap text-center">
+        <span class="p-2"><b>{{ item.quantity }}</b></span>
+    </div>
+    <div class="p-2 flex-shrink-1">
+        <img src="assets/icons/add.png" width="36" (click)="onIncreaseClick()">
+    </div>
+    <div class="p-2 text-right" (click)="onEditClick()" style="width: 20%; margin-right: 10px;">
+        {{ (item.item.selling_price * item.quantity) - item.discount | number: '1.2-2'  }}
+    </div>
+</div>
+
+
+<!-- A Modal for updating the price of a sale item -->
+<ng-template #saleItemEditModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Update Sale Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="form-group">
+                <input type="number" min="0" step="0.01" class="form-control" formControlName="new_amount">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onResetClick()">Reset</button>
+      <button type="button" class="btn btn-primary" (click)="onApplyClick()">Apply</button>
+    </div>
+</ng-template>

@@ -1,0 +1,7 @@
+.delete-button {
+    cursor: pointer;
+}
+
+.sale-item {
+    border-bottom: 1px solid lightgray;
+}

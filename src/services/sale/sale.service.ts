@@ -131,13 +131,13 @@ export class SaleService {
   private newSaleItem(saleId, item): Promise<any> {
     var values = [
       saleId,
-      item.item.id,
+      item.id,
       item.quantity,
-      item.item.base_price,
-      0,
-      item.item.base_price,
-      item.item.vat_amount,
-      item.item.selling_price
+      item.base_price,
+      item.discount,
+      item.net_amount,
+      item.vat_amount,
+      item.total_price
     ];
     var stmt = `INSERT INTO sale_item(sale, item, quantity, base_price, discount, net_amount, vat_amount, total_price) 
     VALUES (${values.join(',')})`;
@@ -152,11 +152,11 @@ export class SaleService {
   private newSaleRefundItem(saleRefundId, item): Promise<any> {
     var values = [
       saleRefundId,
-      item.item, //item_id
+      item.id,
       item.refund_quantity,
       item.base_price,
-      0,
-      item.base_price,
+      item.discount,
+      item.net_amount,
       item.vat_amount,
       item.total_price
     ];

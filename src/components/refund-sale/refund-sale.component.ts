@@ -73,9 +73,21 @@ export class RefundSaleComponent implements OnInit {
   onRefundClick() {
     if (!this.refundTotal) 
       return;
+
+    var items = this.items.map(item => {
+      return {
+        id: item.item,
+        refund_quantity: item.refund_quantity,
+        base_price: item.net_amount,
+        discount: 0,
+        net_amount: item.net_amount,
+        vat_amount:item.vat_amount,
+        total_price: item.total_price
+      };
+    });
     
     var refund = {
-      items: this.items,
+      items: items,
       subtotal: this.refundSubtotal,
       total_discount: 0,
       net_amount: this.refundSubtotal,
@@ -106,7 +118,7 @@ export class RefundSaleComponent implements OnInit {
     this.refundVatAmount = 0;
     this.refundTotal = 0;
     for (let i = 0; i < this.items.length; i++) {
-      this.refundSubtotal += this.items[i].refund_quantity * this.items[i].base_price;
+      this.refundSubtotal += this.items[i].refund_quantity * this.items[i].net_amount;
       this.refundVatAmount += this.items[i].refund_quantity * this.items[i].vat_amount;
       this.refundTotal += this.items[i].refund_quantity * this.items[i].total_price;
     }

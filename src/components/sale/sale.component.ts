@@ -17,6 +17,7 @@ export class SaleComponent implements OnInit {
   saleTotal: number = 0;
   saleVatAmount: number = 0;
   saleSubtotal: number = 0;
+  saleTotalDiscount: number = 0;
   selectCustomerModalRef: NgbModalRef;
 
   constructor(private modalService: NgbModal, private saleService: SaleService) {
@@ -41,6 +42,70 @@ export class SaleComponent implements OnInit {
     if (this.selectCustomerModalRef) {
       this.selectCustomerModalRef.dismiss();
     }
+  }
+  
+
+  onItemDelete(index) {
+    this.saleItems.splice(index, 1);
+    this.updateSummary();
+    this.updateLocalStorage(); 
+  }
+
+
+  onItemChange(index, item) {
+    if (item.quantity <= 0) {
+      this.onItemDelete(index);
+    } else {
+      this.saleItems[index] = item;
+    }
+    this.updateSummary();
+    this.updateLocalStorage(); 
+  }
+  
+
+  makePayment(type) {
+    var customerId = null;
+    var items = this.saleItems.map(item => {
+      return {
+        id: item.item.id,
+        quantity: item.quantity,
+        base_price: item.item.base_price,
+        discount: item.item.base_price * ((item.discount / item.quantity) / item.item.selling_price),
+        net_amount: item.item.base_price * (1 - ((item.discount / item.quantity) / item.item.selling_price)),
+        vat_amount: item.item.vat_amount * (1 - ((item.discount / item.quantity) / item.item.selling_price)),
+        total_price: item.item.selling_price * (1 - ((item.discount / item.quantity) / item.item.selling_price)),
+      };
+    });
+
+    var sale = {
+      subtotal: items.reduce((acc, curr) => {
+        return acc + (curr.quantity * curr.base_price);
+      }, 0),
+      total_discount: items.reduce((acc, curr) => {
+        return acc + (curr.quantity * curr.discount);
+      }, 0),
+      net_amount: items.reduce((acc, curr) => {
+        return acc + (curr.quantity * curr.net_amount);
+      }, 0),
+      total_vat: items.reduce((acc, curr) => {
+        return acc + (curr.quantity * curr.vat_amount);
+      }, 0),
+      grand_total: items.reduce((acc, curr) => {
+        return acc + (curr.quantity * curr.total_price);
+      }, 0),
+      items: items,
+      type: type
+    }
+
+    debugger;
+
+    if (this.selectedCustomer && type == 'credit') {
+      customerId = this.selectedCustomer.id;
+    }
+
+    this.saleService.newSale(sale, customerId).then(() => {
+      this.clearSale();
+    });
   }
 
 
@@ -82,79 +147,6 @@ export class SaleComponent implements OnInit {
   }
   
 
-  onDeleteClick(index) {
-    this.saleItems.splice(index, 1);
-    this.updateSummary();
-    this.updateLocalStorage(); 
-  }
-
-  
-  onIncreaseClick(index) {
-    // prompt for quantity if by weight
-    if (this.saleItems[index].item.by_weight === "1") {
-      var quantity = parseFloat(prompt("Enter Quantity: "));
-      if (!quantity || quantity <= 0) 
-        return;
-      this.saleItems[index].quantity = quantity;
-    } else {
-      this.saleItems[index].quantity += 1;
-    }
-    this.updateSummary();
-    this.updateLocalStorage(); 
-  }
-
-
-  onDecreaseClick(index) {
-    // prompt for quantity if by weight
-    if (this.saleItems[index].item.by_weight === "1") {
-      var quantity = parseFloat(prompt("Enter Quantity: "));
-      if (!quantity || quantity <= 0) 
-        return;
-      this.saleItems[index].quantity = quantity;
-    } else {
-      if (this.saleItems[index].quantity - 1 <= 0) {
-        this.saleItems.splice(index, 1);
-      } else {
-        this.saleItems[index].quantity -= 1;
-      }
-    }
-    this.updateSummary();
-    this.updateLocalStorage(); 
-  }
-
-
-  onCashClick() {
-    var sale = {
-      subtotal: this.saleSubtotal,
-      total_discount: 0,
-      net_amount: this.saleSubtotal,
-      total_vat: this.saleVatAmount,
-      grand_total: this.saleTotal,
-      items: this.saleItems,
-      type: 'cash'
-    }
-    this.saleService.newSale(sale, null).then(() => {
-      this.clearSale();
-    });
-  }
-  
-
-  onCreditClick() {
-    var sale = {
-      subtotal: this.saleSubtotal,
-      total_discount: 0,
-      net_amount: this.saleSubtotal,
-      total_vat: this.saleVatAmount,
-      grand_total: this.saleTotal,
-      items: this.saleItems,
-      type: 'credit'
-    }
-    this.saleService.newSale(sale, this.selectedCustomer.id).then(() => {
-      this.clearSale();
-    });
-  }
-  
-
   addItem(item) {
     var quantity = 1;
     if (item.by_weight === "1") {
@@ -172,6 +164,7 @@ export class SaleComponent implements OnInit {
     } else {
       this.saleItems.unshift({
         'item': item,
+        'discount': 0,
         'quantity': quantity
       });
     }
@@ -187,12 +180,22 @@ export class SaleComponent implements OnInit {
     this.saleTotal = 0;
     this.saleVatAmount = 0;
     this.saleSubtotal = 0;
+    this.saleTotalDiscount = 0;
+    
     for (let i = 0; i < this.saleItems.length; i++) {
-      this.saleSubtotal += this.saleItems[i].quantity * this.saleItems[i].item.base_price;
-      this.saleVatAmount += this.saleItems[i].quantity * this.saleItems[i].item.vat_amount;
-      this.saleTotal += this.saleItems[i].quantity * this.saleItems[i].item.selling_price;
+      let qty = this.saleItems[i].quantity;
+      let sub = qty * this.saleItems[i].item.base_price;
+      let dis = this.saleItems[i].discount;
+      let tot = (qty * this.saleItems[i].item.selling_price) - dis;
+      let vat = qty * this.saleItems[i].item.vat_amount;
+
+      this.saleTotal += tot;
+      this.saleVatAmount += vat;
+      this.saleSubtotal += sub;
+      this.saleTotalDiscount += dis;
     }
   }
+  
 
   private updateLocalStorage() {
     localStorage.setItem('current_sale', JSON.stringify(this.saleItems));
