@@ -16,17 +16,21 @@
         </div>
     </div>
 
-    <form method="post" [formGroup]="updatePriceForm" (ngSubmit)="onUpdatePriceFormSubmit(updatePriceForm)">
+    <form [formGroup]="updatePriceForm">
       <div class="form-group">
         <label>Selling Price<span style="color: red">*</span></label>
         <div class="input-group mb-3">
           <input type="text" min="0" step="0.05" class="form-control" formControlName="price">
           <div class="input-group-append">
-            <button class="btn btn-success" type="submit">Update</button>
+            <button type="button" class="btn btn-success" (click)="onUpdatePriceFormSubmit(updatePriceForm)">Update</button>
           </div>
         </div>
       </div>
     </form>
+
+    <p>
+        Barcode: <em>{{ product.barcode }}</em>
+    </p>
 
     <div class="flex-fill" style="overflow-y: auto;">
         <table class="table table-striped">
