@@ -23,14 +23,20 @@ export class DashboardPage implements OnInit {
 
   private loadSalesStatistics() {
     this.kpiService.getTodaySalesStatistics().then(response => {
-      this.todayCashSales = response.data[0]['today_cash_sales'];
-      this.todayCreditSales = response.data[0]['today_credit_sales'];
+      if (response.data[0]['today_cash_sales']) {
+        this.todayCashSales = response.data[0]['today_cash_sales'];
+      }
+      if (response.data[0]['today_credit_sales']) {
+        this.todayCreditSales = response.data[0]['today_credit_sales'];
+      }
     });
   }
 
   private loadPurchasesStatistics() {
     this.kpiService.getTodayPurchasesStatistics().then(response => {
-      this.todayTotalPurchases = response.data[0]['today_total_purchases'];
+      if (response.data[0]['today_total_purchases']) {
+        this.todayTotalPurchases = response.data[0]['today_total_purchases'];
+      }
     });
   }
 

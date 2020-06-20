@@ -7,6 +7,42 @@
     </div>
 
     <div class="row">
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">Total Sales</h6>
+              <h3 class="card-title">{{ todayCreditSales + todayCashSales | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
+              <div class="d-flex mt-4" style="border-top: 1px solid lightgrey;">
+                <div class="pt-2 w-50 text-center">
+                  <b class="text-muted">Cash</b>
+                  <h5 class="m-0">{{ todayCashSales | number: '1.2-2' }}</h5>
+                </div>
+                <div class="pt-2 w-50 text-center">
+                  <b class="text-muted">Credit</b>
+                  <h5 class="m-0">{{ todayCreditSales | number: '1.2-2' }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">Total Purchase Today</h6>
+              <h3 class="card-title">{{ todayTotalPurchases | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
+              <div class="d-flex mt-4" style="border-top: 1px solid lightgrey;">
+                <div class="pt-2 w-50 text-center">
+                  <b class="text-muted">Cash</b>
+                  <h5 class="m-0">--</h5>
+                </div>
+                <div class="pt-2 w-50 text-center">
+                  <b class="text-muted">Credit</b>
+                  <h5 class="m-0">--</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- <div class="col-3">
           <div class="card">
             <div class="card-body">
@@ -15,30 +51,24 @@
             </div>
           </div>
         </div> -->
-        <div class="col-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ todayCreditSales + todayCashSales | number: '1.2-2' }} <sub><small>AED Today</small></sub></h5>
-              <h6 class="card-subtitle mb-2 text-muted">Total Sales</h6>
-            </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-3">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">-- <sub><small>AED Today</small></sub></h3>
+            <h6 class="card-subtitle mb-2 text-muted">Customer Payments</h6>
           </div>
         </div>
-        <div class="col-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ todayCreditSales | number: '1.2-2' }} <sub><small>AED</small></sub></h5>
-              <h6 class="card-subtitle mb-2 text-muted">Total Credit Sales</h6>
-            </div>
+      </div>
+      <div class="col-3">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">-- <sub><small>AED Today</small></sub></h3>
+            <h6 class="card-subtitle mb-2 text-muted">Supplier Payments</h6>
           </div>
         </div>
-        <div class="col-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ todayTotalPurchases | number: '1.2-2' }} <sub><small>AED</small></sub></h5>
-              <h6 class="card-subtitle mb-2 text-muted">Total Purchase Today</h6>
-            </div>
-          </div>
-        </div>
+      </div>
     </div>
 
     <!-- 
