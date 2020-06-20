@@ -30,7 +30,7 @@ export class ItemService {
   getItems(query = null, category = null): Promise<any> {
     var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     if (query) {
-      stmt += ` AND I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%' OR I.code LIKE '%${query}%'`;
+      stmt += ` AND (I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%' OR I.code LIKE '%${query}%')`;
     }
     if (category) {
       stmt += ` AND I.category = ${category}`;
