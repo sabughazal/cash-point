@@ -18,6 +18,7 @@ export class ProductPage implements OnInit {
   productId: any;
   product: any;
   purchases: Array<any> = [];
+  allowCount: boolean = false;
 
   constructor(
     private modalService: NgbModal, 
@@ -74,6 +75,7 @@ export class ProductPage implements OnInit {
     });
     this.itemService.getPurchasesOf(this.productId).then(response => {
       this.purchases = response.data;
+      this.allowCount = this.purchases.length > 0 ? true : false;
     });
   }
 

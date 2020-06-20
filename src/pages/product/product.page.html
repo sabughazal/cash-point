@@ -10,7 +10,7 @@
         <div class="ml-auto p-2 flex-shrink-1">
             <button type="button" class="btn btn-warning btn-lg" (click)="onPackagesClick()">Packages</button>
             &nbsp;
-            <button type="button" class="btn btn-warning btn-lg" (click)="onCountClick()">Count</button>
+            <button type="button" class="btn btn-warning btn-lg" (click)="onCountClick()" [disabled]="!allowCount">Count</button>
             &nbsp;
             <button *ngIf="product.subitem" type="button" class="btn btn-warning btn-lg" (click)="onAdjustClick()">Adjust</button>
         </div>
