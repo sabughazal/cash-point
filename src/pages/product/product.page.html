@@ -28,7 +28,7 @@
       </div>
     </form>
 
-    <p>
+    <p *ngIf="product">
         Barcode: <em *ngIf="product.barcode">{{ product.barcode }}</em>
         <em *ngIf="!product.barcode">(None)</em>
     </p>
