@@ -11,15 +11,16 @@
           <div class="card">
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted">Total Sales</h6>
-              <h3 class="card-title">{{ todayCreditSales + todayCashSales | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
+              <h3 class="card-title">{{ todayTotalSales  | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
               <div class="d-flex mt-4" style="border-top: 1px solid lightgrey;">
                 <div class="pt-2 w-50 text-center">
-                  <b class="text-muted">Cash</b>
-                  <h5 class="m-0">{{ todayCashSales | number: '1.2-2' }}</h5>
+                  <b class="text-muted">Cash </b>
+                  <h5 class="m-0">{{ todayCashSales | number: '1.2-2' }} <small class="text-muted">({{ (todayCashSales / todayTotalSales) * 100 | number: '1.0-1' }}%)</small></h5>
                 </div>
                 <div class="pt-2 w-50 text-center">
-                  <b class="text-muted">Credit</b>
-                  <h5 class="m-0">{{ todayCreditSales | number: '1.2-2' }}</h5>
+                  <b class="text-muted">Credit </b>
+                  <h5 class="m-0">{{ todayCreditSales | number: '1.2-2' }} <small class="text-muted">({{ (todayCreditSales / todayTotalSales) * 100 | number: '1.0-1' }}%)</small></h5>
+                  
                 </div>
               </div>
             </div>
@@ -32,50 +33,61 @@
               <h3 class="card-title">{{ todayTotalPurchases | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
               <div class="d-flex mt-4" style="border-top: 1px solid lightgrey;">
                 <div class="pt-2 w-50 text-center">
-                  <b class="text-muted">Cash</b>
-                  <h5 class="m-0">--</h5>
+                  <b class="text-muted">Cash </b>
+                  <h5 class="m-0">
+                    {{ todayCashPurchases | number: '1.2-2' }} 
+                    <small class="text-muted">({{ (todayCashPurchases / todayTotalPurchases) * 100 | number: '1.0-1' }}%)</small>
+                  </h5>
                 </div>
                 <div class="pt-2 w-50 text-center">
-                  <b class="text-muted">Credit</b>
-                  <h5 class="m-0">--</h5>
+                  <b class="text-muted">Credit </b>
+                  <h5 class="m-0">
+                    {{ todayCreditPurchases | number: '1.2-2' }} 
+                    <small class="text-muted">({{ (todayCreditPurchases / todayTotalPurchases) * 100 | number: '1.0-1' }}%)</small>
+                  </h5>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- <div class="col-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ 12 | number: '1.2-2' }} <sub><small>/day</small></sub></h5>
-              <h6 class="card-subtitle mb-2 text-muted">Average Sales</h6>
-            </div>
-          </div>
-        </div> -->
     </div>
     <div class="row mt-3">
       <div class="col-3">
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title">-- <sub><small>AED Today</small></sub></h3>
-            <h6 class="card-subtitle mb-2 text-muted">Customer Payments</h6>
+            <h3 class="card-title">{{ todayCustomerPayments | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
+            <h6 class="card-subtitle mb-2 text-muted">Customer Credit Payments</h6>
           </div>
         </div>
       </div>
       <div class="col-3">
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title">-- <sub><small>AED Today</small></sub></h3>
-            <h6 class="card-subtitle mb-2 text-muted">Supplier Payments</h6>
+            <h3 class="card-title">{{ todaySupplierPayments | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
+            <h6 class="card-subtitle mb-2 text-muted">Supplier Credit Payments</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <div class="card">
+          <div class="card-body" style="padding: 14px 0;">
+            <ngx-charts-line-chart [scheme]="salesChartScheme" [results]="salesChartData" [referenceLines]="refLines" 
+              [showRefLines]="true" [showRefLabels]="true" [gradient]="false"
+              [xAxis]="true" [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [xAxisLabel]="'Total Sales Last 30 Days'"
+              [showYAxisLabel]="false">
+            </ngx-charts-line-chart>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 
-      30-day Sales Average
-      Total Credit Amount
-      Total Credit paid back today.
-      Daily sales in previous 30-days.
+      Total Expenses
+      Total Credit
+      Total Owed to suppliers
+      Cash flow (in/out)
      -->
 
 </div>

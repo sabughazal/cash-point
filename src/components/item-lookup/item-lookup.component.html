@@ -6,8 +6,13 @@
           <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>
         </div>
     </div>
-    <div class="input-group" style="padding: 2px; width: calc(100% - 30px);">
-        <input type="text" placeholder="Barcode Scanner" class="form-control" (change)="onBarcodeInput($event)">
+    <div class="input-group d-flex flex-row" style="padding: 2px; width: calc(100% - 30px);">
+            <div class="w-50">
+                <input #barcodeInput type="text" placeholder="Barcode Scanner" class="form-control" (change)="onBarcodeInput($event)">
+            </div>
+            <div class="w-50 pl-1">
+                <input type="text" placeholder="Code Search" class="form-control" (change)="onCodeInput($event)">
+            </div>
     </div>
 
     <div *ngIf="categoryStack.length > 0"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SaleService } from 'src/services/sale/sale.service';
 import { CustomerLookupComponent } from '../customer-lookup/customer-lookup.component';
@@ -10,6 +10,7 @@ import { CustomerLookupComponent } from '../customer-lookup/customer-lookup.comp
 })
 export class SaleComponent implements OnInit {
 
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
   savedSales: Array<any> = [];
 
   saleItems: Array<any> = [];
@@ -42,6 +43,7 @@ export class SaleComponent implements OnInit {
     if (this.selectCustomerModalRef) {
       this.selectCustomerModalRef.dismiss();
     }
+    this.onChange.emit();
   }
   
 
@@ -150,7 +152,7 @@ export class SaleComponent implements OnInit {
   addItem(item) {
     var quantity = 1;
     if (item.by_weight === "1") {
-      quantity = parseFloat(prompt("Enter Quantity: "));
+      quantity = parseFloat(prompt("("+item.description.trim()+")\nEnter Quantity: "));
       if (!quantity || quantity <= 0) return;
     }
 
@@ -194,6 +196,8 @@ export class SaleComponent implements OnInit {
       this.saleSubtotal += sub;
       this.saleTotalDiscount += dis;
     }
+    
+    this.onChange.emit();
   }
   
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ItemService } from 'src/services/item/item.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { ItemService } from 'src/services/item/item.service';
 })
 export class ItemLookupComponent implements OnInit {
 
+  @ViewChild('barcodeInput', {static: true}) barcodeInput: ElementRef;
   @Output() onItemSelect: EventEmitter<any> = new EventEmitter();
 
   currentCategories: Array<any> = [];
@@ -21,8 +22,13 @@ export class ItemLookupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.barcodeInput.nativeElement.focus();
     this.loadCategories();
     this.loadItems();
+  }
+
+  focusOnBarcodeInput() {
+    this.barcodeInput.nativeElement.focus();
   }
 
   onCategoryClick(category) {
@@ -47,6 +53,16 @@ export class ItemLookupComponent implements OnInit {
   onBarcodeInput(event) {
     let barcode = event.target.value;
     this.itemService.getItemByBarcode(barcode).then(response => {
+      if (response.data.length === 1) {
+        this.onItemSelect.emit(response.data[0]);
+      }
+    });
+    event.target.value = "";
+  }
+
+  onCodeInput(event) {
+    let code = event.target.value;
+    this.itemService.getItemByCode(code).then(response => {
       if (response.data.length === 1) {
         this.onItemSelect.emit(response.data[0]);
       }

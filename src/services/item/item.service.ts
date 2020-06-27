@@ -30,7 +30,7 @@ export class ItemService {
   getItems(query = null, category = null): Promise<any> {
     var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     if (query) {
-      stmt += ` AND (I.description	LIKE '%${query}%' OR I.barcode LIKE '%${query}%' OR I.code LIKE '%${query}%')`;
+      stmt += ` AND (lower(I.description) LIKE lower('%${query}%') OR I.barcode LIKE '%${query}%' OR I.code LIKE '%${query}%')`;
     }
     if (category) {
       stmt += ` AND I.category = ${category}`;
@@ -58,6 +58,28 @@ export class ItemService {
   getItemByBarcode(barcode): Promise<any> {
     var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
     stmt += ` AND I.barcode	LIKE "%${barcode}%" LIMIT 1;`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      response.data.map(el => {
+        // el.by_weight = (el.by_weight == '1') ? true : false;
+        el.base_price = parseFloat(el.base_price);
+        el.selling_price = parseFloat(el.selling_price);
+        el.vat_amount = parseFloat(el.vat_amount);
+      });
+      return response;
+    });
+		return promise;
+  }
+
+
+  getItemByCode(code): Promise<any> {
+    var stmt = "SELECT I.*, P.base_price, P.vat_amount, P.selling_price, P.vat_percentage FROM item AS I JOIN price as P ON I.id=P.item WHERE P.date_added=(SELECT max(S.date_added) FROM price as S WHERE S.item=I.id)";
+    stmt += ` AND I.code LIKE '%${code}%' LIMIT 1;`;
 		let options = {
       params: {
         query: stmt
@@ -129,8 +151,8 @@ export class ItemService {
     return new Promise((resolve, reject) => {
       var values = [
         `"${item.description}"`,
-        `${item.category != "" ? item.category : "NULL"}`,
-        `"${item.barcode ? item.barcode : "NULL"}"`,
+        item.category != "" ? `${item.category}` : "NULL",
+        item.barcode ? `"${item.barcode}"` : "NULL",
         item.code ? `"${item.code}"` : "NULL",
         item.by_weight ? 1 : 0
       ];

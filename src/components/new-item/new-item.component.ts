@@ -26,7 +26,11 @@ export class NewItemComponent implements OnInit {
   }
 
   onSaveClick(form) {
+    // console.log(form.value);
+    // return;
     if (!form.valid) return;
+    if (form.value.barcode == '') form.value.barcode = null;
+    if (form.value.code == '') form.value.code = null;
     this.form.get('vat_amount').enable();
     this.itemService.newItem(form.value).then(() => {
       this.activeModal.close();

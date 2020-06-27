@@ -29,7 +29,8 @@
     </form>
 
     <p>
-        Barcode: <em>{{ product.barcode }}</em>
+        Barcode: <em *ngIf="product.barcode">{{ product.barcode }}</em>
+        <em *ngIf="!product.barcode">(None)</em>
     </p>
 
     <div class="flex-fill" style="overflow-y: auto;">

@@ -4,6 +4,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxElectronModule } from 'ngx-electron';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemLookupComponent } from '../components/item-lookup/item-lookup.component';
@@ -68,6 +70,8 @@ import { SaleItemComponent } from '../components/sale-item/sale-item.component';
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    NgxChartsModule,
     AppRoutingModule
   ],
   entryComponents: [
