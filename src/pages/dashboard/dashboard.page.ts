@@ -25,6 +25,7 @@ export class DashboardPage implements OnInit {
   todayTotalPurchases: number = 0;
   todayCustomerPayments: number = 0;
   todaySupplierPayments: number = 0;
+  totalCustomerCredit: number = 0;
 
   constructor(
     private kpiService: KpiService
@@ -37,6 +38,7 @@ export class DashboardPage implements OnInit {
     this.loadCustomerPayments();
     this.loadSupplierPayments();
     this.loadChartData();
+    this.loadCustomerCredit();
   }
 
 
@@ -110,6 +112,15 @@ export class DashboardPage implements OnInit {
           this.refLines[0].name = average.toFixed(2);
         });
       });
+    });
+  }
+
+
+  private loadCustomerCredit() {
+    this.kpiService.getTotalCustomerCredit().then(response => {
+      if (response.data[0]['total_credit']) {
+        this.totalCustomerCredit = response.data[0]['total_credit'];
+      }
     });
   }
 

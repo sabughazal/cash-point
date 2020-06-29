@@ -74,7 +74,7 @@ export class RefundSaleComponent implements OnInit {
     if (!this.refundTotal) 
       return;
 
-    var items = this.items.map(item => {
+    var items = this.items.filter(item => item.refund_quantity > 0).map(item => {
       return {
         id: item.item,
         refund_quantity: item.refund_quantity,

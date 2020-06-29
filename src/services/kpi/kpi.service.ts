@@ -156,5 +156,23 @@ export class KpiService {
     });
 		return promise;
   }
+
+  
+  getTotalCustomerCredit(): Promise<any> {
+    var stmt = `CALL kpi_total_customer_credit();`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      if (response.data[0]) {
+        response.data[0]['total_credit'] = parseFloat(response.data[0]['total_credit']);
+      }
+      return response;
+    });
+		return promise;
+  }
   
 }

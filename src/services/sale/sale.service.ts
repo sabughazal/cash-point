@@ -44,7 +44,7 @@ export class SaleService {
 
   getSaleItems(saleId): Promise<any> {
     var stmt = `SELECT SI.*, I.description AS description, I.by_weight as by_weight, 
-        (SELECT SUM(RI.quantity) FROM sale_item AS RI WHERE RI.sale IN (SELECT S.id FROM sale AS S WHERE S.refund_reference = SI.sale)) AS refunded 
+        (SELECT SUM(RI.quantity) FROM sale_item AS RI WHERE RI.item = SI.item AND RI.sale IN (SELECT S.id FROM sale AS S WHERE S.refund_reference = SI.sale)) AS refunded 
     FROM sale_item AS SI JOIN item AS I ON SI.item=I.id WHERE sale = ${saleId};`;
 		let options = {
       params: {

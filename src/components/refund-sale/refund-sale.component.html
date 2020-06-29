@@ -11,7 +11,7 @@
             <div class="d-flex w-100 justify-content-between align-items-center p-1">
                 <div>
                     <b>{{ item.quantity | number: '1.0-4' }}x</b> {{ item.description }} 
-                    <small *ngIf="item.refunded" style="color: red">x{{ item.refunded | number: '1.0-4' }} Refunded</small>
+                    <small *ngIf="item.refunded" style="color: red"><br>x{{ item.refunded | number: '1.0-4' }} Refunded</small>
                 </div>
                 <div>
                     <img src="assets/icons/remove.png" width="36" (click)="onDecreaseClick(i)">

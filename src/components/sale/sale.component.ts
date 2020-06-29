@@ -99,8 +99,6 @@ export class SaleComponent implements OnInit {
       type: type
     }
 
-    debugger;
-
     if (this.selectedCustomer && type == 'credit') {
       customerId = this.selectedCustomer.id;
     }
