@@ -50,7 +50,7 @@ export class KpiService {
   }
 
   
-  getTodayCustomerPapyments(): Promise<any> {
+  getTodayCustomerPayments(): Promise<any> {
     var stmt = `CALL kpi_today_customer_payments();`;
 		let options = {
       params: {
@@ -86,8 +86,8 @@ export class KpiService {
   }
 
 
-  getDailySales(): Promise<any> {
-    var stmt = `CALL kpi_daily_sales();`;
+  get30DaySalesMargin(): Promise<any> {
+    var stmt = `CALL kpi_30day_sales_margin();`;
 		let options = {
       params: {
         query: stmt
@@ -96,13 +96,7 @@ export class KpiService {
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
       if (response.data[0]) {
-        response.data = response.data.map(el => {
-          let ts = new Date(el.day);
-          return {
-            name: ts.getDate().toString(),
-            value: parseFloat(el.sales)
-          };
-        });
+        response.data[0]['sales_margin'] = parseFloat(response.data[0]['sales_margin']);
       }
       return response;
     });
@@ -110,8 +104,8 @@ export class KpiService {
   }
 
 
-  getDailyCashSales(): Promise<any> {
-    var stmt = `CALL kpi_daily_cash_sales();`;
+  get30DayFreshSalesMargin(): Promise<any> {
+    var stmt = `CALL kpi_30day_fresh_sales_margin();`;
 		let options = {
       params: {
         query: stmt
@@ -120,13 +114,7 @@ export class KpiService {
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
       if (response.data[0]) {
-        response.data = response.data.map(el => {
-          let ts = new Date(el.day);
-          return {
-            name: ts.getDate().toString(),
-            value: parseFloat(el.sales)
-          };
-        });
+        response.data[0]['sales_margin'] = parseFloat(response.data[0]['sales_margin']);
       }
       return response;
     });
@@ -134,8 +122,8 @@ export class KpiService {
   }
 
 
-  getDailyCreditSales(): Promise<any> {
-    var stmt = `CALL kpi_daily_credit_sales();`;
+  get30DayOtherSalesMargin(): Promise<any> {
+    var stmt = `CALL kpi_30day_other_sales_margin();`;
 		let options = {
       params: {
         query: stmt
@@ -144,12 +132,50 @@ export class KpiService {
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
       if (response.data[0]) {
-        response.data = response.data.map(el => {
-          let ts = new Date(el.day);
-          return {
-            name: ts.getDate().toString(),
-            value: parseFloat(el.sales)
-          };
+        response.data[0]['sales_margin'] = parseFloat(response.data[0]['sales_margin']);
+      }
+      return response;
+    });
+		return promise;
+  }
+
+
+  get30DaySales(): Promise<any> {
+    var stmt = `CALL kpi_30day_sales();`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      if (response.data[0]) {
+        response.data.forEach(el => {
+          el['total_sales'] = parseFloat(el['total_sales']);
+          el['cash_sales'] = parseFloat(el['cash_sales']);
+          el['credit_sales'] = parseFloat(el['credit_sales']);
+          el['fresh_sales'] = parseFloat(el['fresh_sales']);
+          el['day'] = new Date(el['day']).getDate().toString();
+        });
+      }
+      return response;
+    });
+		return promise;
+  }
+
+  
+  getTodaySalesPerCategory(): Promise<any> {
+    var stmt = `CALL kpi_today_sales_per_category();`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      if (response.data[0]) {
+        response.data.forEach(el => {
+          el['total'] = parseFloat(el['total']);
         });
       }
       return response;
@@ -160,6 +186,24 @@ export class KpiService {
   
   getTotalCustomerCredit(): Promise<any> {
     var stmt = `CALL kpi_total_customer_credit();`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      if (response.data[0]) {
+        response.data[0]['total_credit'] = parseFloat(response.data[0]['total_credit']);
+      }
+      return response;
+    });
+		return promise;
+  }
+
+  
+  getTotalSupplierCredit(): Promise<any> {
+    var stmt = `CALL kpi_total_supplier_credit();`;
 		let options = {
       params: {
         query: stmt

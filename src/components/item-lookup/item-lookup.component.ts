@@ -17,6 +17,8 @@ export class ItemLookupComponent implements OnInit {
   itemSquareWidth: number = 120;
   currentItems: Array<any> = [];
 
+  searchDelay: any;
+
   constructor(private itemService: ItemService) {
 
   }
@@ -71,16 +73,25 @@ export class ItemLookupComponent implements OnInit {
   }
 
   onSearchInput(query) {
-    if (query == '') {
-      this.onSearchClearClick();
-      return;
+    if (this.searchDelay) {
+      clearTimeout(this.searchDelay);
+      this.searchDelay = null;
+      console.log("Searching Canceled!");
     }
-    if (this.categoryStack.length > 0) {
-      this.loadItems(query, this.categoryStack[this.categoryStack.length - 1]);
-    } else {
-      this.loadItems(query);
-    }
-    this.currentCategories = [];
+    this.searchDelay = setTimeout(() => {
+      console.log("Searching...");
+      
+      if (query == '') {
+        this.onSearchClearClick();
+        return;
+      }
+      if (this.categoryStack.length > 0) {
+        this.loadItems(query, this.categoryStack[this.categoryStack.length - 1]);
+      } else {
+        this.loadItems(query);
+      }
+      this.currentCategories = [];
+    }, 900);
   }
 
   onSearchClearClick() {

@@ -48,6 +48,7 @@
             </div>
             <div class="align-self-center mt-auto">
                 <span>{{ item.selling_price | number: '1.2-2' }}</span>
+                <span *ngIf="item.by_weight == '1'"><sub> / Kg</sub></span>
             </div>
         </div>
     </div>

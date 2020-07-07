@@ -15,7 +15,9 @@
           <label for="category">Category</label>
           <select class="form-control" formControlName="category" id="category">
             <option value="">(None)</option>
-            <option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</option>
+            <option *ngFor="let category of categories" value="{{ category.id }}">
+              <span *ngIf="category.parent_category">{{ category.parent_category_name }} > </span>{{ category.name }}
+            </option>
           </select>
         </div>
         <div class="form-row">
@@ -24,7 +26,7 @@
             <input type="text" class="form-control" formControlName="barcode" id="barcode">
           </div>
           <div class="form-group col">
-            <label for="code">Code</label>
+            <label for="code">Quick Code</label>
             <input type="text" class="form-control" formControlName="code" id="code">
           </div>
         </div>

@@ -31,6 +31,9 @@
     <p *ngIf="product">
         Barcode: <em *ngIf="product.barcode">{{ product.barcode }}</em>
         <em *ngIf="!product.barcode">(None)</em>
+        &nbsp;&nbsp;
+        Quick Code: <em *ngIf="product.code">{{ product.code }}</em>
+        <em *ngIf="!product.code">(None)</em>
     </p>
 
     <div class="flex-fill" style="overflow-y: auto;">

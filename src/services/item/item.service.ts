@@ -10,18 +10,17 @@ export class ItemService {
   constructor(private http: HttpClient) { }
 
   getCategories(parent = null, all = true): Promise<any> {
-    var stmt = "SELECT * FROM category WHERE parent_category IS NULL";
+    var stmt = "SELECT * FROM category WHERE parent_category IS NULL ORDER BY name ASC;";
     if (parent) {
-      stmt = `SELECT * FROM category WHERE parent_category = ${parent}`;
+      stmt = `SELECT * FROM category WHERE parent_category = ${parent} ORDER BY name ASC;`;
     } else if (all) {
-      stmt = "SELECT * FROM category WHERE 1=1"
+      stmt = "SELECT C.*, PC.name AS parent_category_name FROM category AS C LEFT JOIN category AS PC ON C.parent_category = PC.id WHERE 1=1;"
     }
 		let options = {
       params: {
         query: stmt
       }
     };
-    stmt += " ORDER BY name ASC;";
     var promise = this.http.get(endpoint, options).toPromise();
 		return promise;
   }
@@ -35,7 +34,7 @@ export class ItemService {
     if (category) {
       stmt += ` AND I.category = ${category}`;
     }
-    stmt += " ORDER BY I.date_added DESC LIMIT 100;";
+    stmt += " ORDER BY I.date_added DESC LIMIT 80;";
 		let options = {
       params: {
         query: stmt
@@ -43,12 +42,14 @@ export class ItemService {
     };
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
-      response.data.map(el => {
-        // el.by_weight = (el.by_weight == '1') ? true : false;
-        el.base_price = parseFloat(el.base_price);
-        el.selling_price = parseFloat(el.selling_price);
-        el.vat_amount = parseFloat(el.vat_amount);
-      });
+      if (response) {
+        response.data.map(el => {
+          // el.by_weight = (el.by_weight == '1') ? true : false;
+          el.base_price = parseFloat(el.base_price);
+          el.selling_price = parseFloat(el.selling_price);
+          el.vat_amount = parseFloat(el.vat_amount);
+        });
+      }
       return response;
     });
 		return promise;
@@ -65,12 +66,14 @@ export class ItemService {
     };
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
-      response.data.map(el => {
-        // el.by_weight = (el.by_weight == '1') ? true : false;
-        el.base_price = parseFloat(el.base_price);
-        el.selling_price = parseFloat(el.selling_price);
-        el.vat_amount = parseFloat(el.vat_amount);
-      });
+      if (response) {
+        response.data.map(el => {
+          // el.by_weight = (el.by_weight == '1') ? true : false;
+          el.base_price = parseFloat(el.base_price);
+          el.selling_price = parseFloat(el.selling_price);
+          el.vat_amount = parseFloat(el.vat_amount);
+        });
+      }
       return response;
     });
 		return promise;
@@ -87,12 +90,14 @@ export class ItemService {
     };
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
-      response.data.map(el => {
-        // el.by_weight = (el.by_weight == '1') ? true : false;
-        el.base_price = parseFloat(el.base_price);
-        el.selling_price = parseFloat(el.selling_price);
-        el.vat_amount = parseFloat(el.vat_amount);
-      });
+      if (response) {
+        response.data.map(el => {
+          // el.by_weight = (el.by_weight == '1') ? true : false;
+          el.base_price = parseFloat(el.base_price);
+          el.selling_price = parseFloat(el.selling_price);
+          el.vat_amount = parseFloat(el.vat_amount);
+        });
+      }
       return response;
     });
 		return promise;
@@ -109,12 +114,14 @@ export class ItemService {
     };
     var promise = this.http.get(endpoint, options).toPromise();
     promise.then((response: any) => {
-      response.data.map(el => {
-        // el.by_weight = (el.by_weight == '1') ? true : false;
-        el.base_price = parseFloat(el.base_price);
-        el.selling_price = parseFloat(el.selling_price);
-        el.vat_amount = parseFloat(el.vat_amount);
-      });
+      if (response) {
+        response.data.map(el => {
+          // el.by_weight = (el.by_weight == '1') ? true : false;
+          el.base_price = parseFloat(el.base_price);
+          el.selling_price = parseFloat(el.selling_price);
+          el.vat_amount = parseFloat(el.vat_amount);
+        });
+      }
       return response;
     });
 		return promise;
