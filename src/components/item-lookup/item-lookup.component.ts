@@ -76,22 +76,16 @@ export class ItemLookupComponent implements OnInit {
     if (this.searchDelay) {
       clearTimeout(this.searchDelay);
       this.searchDelay = null;
-      console.log("Searching Canceled!");
     }
     this.searchDelay = setTimeout(() => {
-      console.log("Searching...");
-      
+      this.categoryStack = [];
       if (query == '') {
         this.onSearchClearClick();
         return;
       }
-      if (this.categoryStack.length > 0) {
-        this.loadItems(query, this.categoryStack[this.categoryStack.length - 1]);
-      } else {
-        this.loadItems(query);
-      }
+      this.loadItems(query);
       this.currentCategories = [];
-    }, 900);
+    }, 800);
   }
 
   onSearchClearClick() {
