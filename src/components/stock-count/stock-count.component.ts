@@ -35,7 +35,7 @@ export class StockCountComponent implements OnInit {
       return;
     }
 
-    this.itemService.newItemStockCount(this.product.id, form.value.counted_quantity).then(() => {
+    this.itemService.newItemStockCount(this.product.id, form.value.counted_quantity, "Physical count.").then(() => {
       this.updateStockForm.reset();
       this.loadCurrentStockCount(this.product.id);
       this.loadStockCountHistory(this.product.id);
@@ -63,11 +63,6 @@ export class StockCountComponent implements OnInit {
         this.currentStock = response.data[0].stock_count;
       }
     });
-  }
-
-  private _confirm(msg) {
-    var confirm = confirm(msg);
-    return confirm;
   }
 
 }

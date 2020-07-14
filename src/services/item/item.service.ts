@@ -197,8 +197,8 @@ export class ItemService {
   }
 
 
-  newItemStockCount(id, countedQuantity): Promise<any> {
-    var stmt = `CALL new_item_count(${id}, ${countedQuantity}, 'Physical count.');`;
+  newItemStockCount(id, countedQuantity, note): Promise<any> {
+    var stmt = `CALL new_item_count(${id}, ${countedQuantity}, '${note}');`;
     let options = {
       params: {
         update: stmt
@@ -209,16 +209,16 @@ export class ItemService {
   }
 
 
-  adjustItemStock(id, adjustQuantity): Promise<any> {
-    var stmt = `CALL adjust_item_stock(${id}, ${adjustQuantity});`;
-    let options = {
-      params: {
-        query: stmt
-      }
-    };
-    var promise = this.http.get(endpoint, options).toPromise();
-		return promise;
-  }
+  // adjustItemStock(id, adjustQuantity): Promise<any> {
+  //   var stmt = `CALL adjust_item_stock(${id}, ${adjustQuantity});`;
+  //   let options = {
+  //     params: {
+  //       query: stmt
+  //     }
+  //   };
+  //   var promise = this.http.get(endpoint, options).toPromise();
+	// 	return promise;
+  // }
 
 
   getCurrentStockOf(id): Promise<any> {

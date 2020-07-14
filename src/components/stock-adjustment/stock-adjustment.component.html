@@ -16,6 +16,9 @@
                 </div>
                 <div class="p-2 mt-auto">
                     <p>{{ product.description }}</p>
+                    <small [ngClass]="{'text-danger': productCurrentStock < 0}">
+                        (Current Stock: <b>{{ productCurrentStock | number : '1.0-3' }}</b>)
+                    </small>
                 </div>
             </div>
         </div>
@@ -29,6 +32,9 @@
                 </div>
                 <div class="p-2 mt-auto">
                     <p *ngIf="subProduct">{{ subProduct.description }}</p>
+                    <small [ngClass]="{'text-danger': subProductCurrentStock < 0}">
+                        (Current Stock: <b>{{ subProductCurrentStock | number : '1.0-3' }}</b>)
+                    </small>
                 </div>
             </div>
         </div>
@@ -36,5 +42,5 @@
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()" [disabled]="true">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()" [disabled]="adjustQuantity <= 0 || !productCurrentStock || productCurrentStock <= 0">Save</button>
 </div>
