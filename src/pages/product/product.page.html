@@ -48,10 +48,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let purchase of purchases; index as i">
+                <tr *ngFor="let purchase of purchases; index as i" [ngClass]="{'text-danger': purchase.type == 'return'}">
                     <th scope="row">{{ i + 1 }}</th>
                     <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
-                    <td>{{ purchase.quantity | number: '1.0-4' }}</td>
+                    <td>
+                        {{ purchase.quantity | number: '1.0-4' }} 
+                        <span *ngIf="purchase.type == 'return'"><em>(Return)</em></span>
+                    </td>
                     <td>{{ purchase.total_cost | number: '1.2-2' }}</td>
                     <td>{{ purchase.total_cost / purchase.quantity | number: '1.2-2' }} / <small>Unit</small></td>
                 </tr>
