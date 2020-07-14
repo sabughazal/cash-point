@@ -27,7 +27,6 @@ export class StockAdjustmentComponent implements OnInit {
 
   onIncreaseClick() {
     this.adjustQuantity += 1;
-
   }
 
   onDecreaseClick() {
@@ -36,7 +35,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
   }
 
-  onSaveClick() {    
+  onSaveClick() {
     if (this.adjustQuantity > 0) {
       this.itemService.adjustItemStock(this.product.id, this.adjustQuantity).then(response => {
         this.activeModal.dismiss();
