@@ -8,11 +8,11 @@
             <h1 class="display-4">{{ product.description }}</h1>
         </div>
         <div class="ml-auto p-2 flex-shrink-1">
+            <button *ngIf="product.subitem" type="button" class="btn btn-success btn-lg" (click)="onAdjustClick()">Adjust</button>
+            &nbsp;
             <button type="button" class="btn btn-warning btn-lg" (click)="onPackagesClick()">Packages</button>
             &nbsp;
             <button type="button" class="btn btn-warning btn-lg" (click)="onCountClick()" [disabled]="!allowCount">Count</button>
-            &nbsp;
-            <button *ngIf="product.subitem" type="button" class="btn btn-warning btn-lg" (click)="onAdjustClick()">Adjust</button>
         </div>
     </div>
 
