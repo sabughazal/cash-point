@@ -18,22 +18,30 @@ export class SuppliersPage implements OnInit {
     this.loadSuppliers();
   }
 
-  onViewClick(supplier) {
-
-  }
-
   onNewSupplierClick() {
     var ref = this.modalService.open(NewSupplierComponent, { size: 'lg' });
     ref.result.finally(() => {
       this.loadSuppliers();
     });
   }
+
+  onSearchInput(query) {
+    if (query == '') {
+      this.onSearchClearClick();
+      return;
+    }
+    this.loadSuppliers(query);
+  }
+
+  onSearchClearClick() {
+    this.loadSuppliers();
+  }
   
 
   /** PRIVATE METHODS */
 
-  private loadSuppliers() {
-    this.supplierService.getSuppliers().then(response => {
+  private loadSuppliers(query = null) {
+    this.supplierService.getSuppliers(query).then(response => {
       this.currentSuppliers = response.data;
     });
   }

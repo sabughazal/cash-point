@@ -10,6 +10,12 @@
     </div>
     
 
+    <div class="input-group input-group-lg mb-3 w-100">
+        <input #search type="text" placeholder="Search suppliers by Name, Contact, or TRN" class="form-control" (input)="onSearchInput($event.target.value)">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="search.value = ''; onSearchClearClick();">Clear</button>
+        </div>
+    </div>
     <div class="flex-fill" style="overflow-y: auto;">
         <table class="table table-striped table-hover">
             <thead>
@@ -19,7 +25,6 @@
                     <th scope="col">Contact</th>
                     <th scope="col">TRN</th>
                     <th scope="col">Total Credit</th>
-                    <!-- <th scope="col"></th> -->
                 </tr>
             </thead>
             <tbody>
@@ -29,9 +34,6 @@
                     <td>{{ supplier.contact }}</td>
                     <td>{{ supplier.tax_number }}</td>
                     <td>{{ supplier.total_credit ? supplier.total_credit : 0 | number: '1.2-2' }}</td>
-                    <!-- <td>
-                        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/suppliers/'+supplier.id]" routerDirection="forward">View</button>
-                    </td> -->
                 </tr>
             </tbody>
         </table>
