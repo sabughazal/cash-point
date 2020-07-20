@@ -35,6 +35,7 @@ import { CustomerLookupComponent } from '../components/customer-lookup/customer-
 import { NewExpenseComponent } from '../components/new-expense/new-expense.component';
 import { StockAdjustmentComponent } from '../components/stock-adjustment/stock-adjustment.component';
 import { SaleItemComponent } from '../components/sale-item/sale-item.component';
+import { PurchasePreviewComponent } from '../components/purchase-preview/purchase-preview.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { SaleItemComponent } from '../components/sale-item/sale-item.component';
     CustomerLookupComponent,
     NewExpenseComponent,
     StockAdjustmentComponent,
-    SaleItemComponent
+    SaleItemComponent,
+    PurchasePreviewComponent
   ],
   imports: [
     NgbModule,

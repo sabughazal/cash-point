@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h4 *ngIf="sale" class="modal-title" id="modal-basic-title">Sale #{{ sale.id }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body pb-0">
+    <div class="list-group" style="height: 400px; overflow-y: auto;">
+        <a *ngFor="let item of items; index as i" class="list-group-item">
+            <div class="d-flex w-100 justify-content-between align-items-center p-1">
+                <div>
+                    <b>{{ item.quantity | number: '1.0-4' }}x</b> {{ item.description }} 
+                    <small *ngIf="item.refunded" style="color: red"><br>x{{ item.refunded | number: '1.0-4' }} Refunded</small>
+                </div>
+                <div>
+                    <img src="assets/icons/remove.png" width="36" (click)="onDecreaseClick(i)">
+                    <span class="p-2">&nbsp;<b>{{ item.refund_quantity }}</b>&nbsp;</span>
+                    <img src="assets/icons/add.png" width="36" (click)="onIncreaseClick(i)">
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="p-2 mt-auto" style="border-top: 1px solid lightgrey">
+        <div class="d-flex mb-1">
+            <div class="mr-auto"><h4>Refund</h4></div>
+            <div class="text-right">
+                <h2>{{ refundTotal | number: '1.2-2' }}</h2>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="mr-auto">
+                <h5>VAT</h5>
+                <h5>Subtotal</h5>
+            </div>
+            <div class="text-right">
+                <h5>{{ refundVatAmount | number: '1.2-2' }}</h5>
+                <h5>{{ refundSubtotal | number: '1.2-2' }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" [disabled]="!refundTotal" (click)="onRefundClick()">Refund</button>
+</div>
