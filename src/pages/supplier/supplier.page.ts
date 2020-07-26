@@ -4,6 +4,7 @@ import { SupplierService } from 'src/services/supplier/supplier.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewPaymentComponent } from 'src/components/new-payment/new-payment.component';
 import { PurchaseService } from 'src/services/purchase/purchase.service';
+import { PurchasePreviewComponent } from 'src/components/purchase-preview/purchase-preview.component';
 
 @Component({
   selector: 'app-supplier',
@@ -34,6 +35,11 @@ export class SupplierPage implements OnInit {
   viewPurchasePayments(purchase) {
     this.selectedPurchase = purchase;
     this.loadPayments(purchase.id);
+  }
+
+  onViewPurchaseClick(purchase) {
+    var ref = this.modalService.open(PurchasePreviewComponent, { size: 'md' });
+    ref.componentInstance.purchase = purchase;
   }
 
   onNewPaymentClick() {

@@ -71,6 +71,19 @@ export class PurchaseService {
   }
 
 
+  getPurchaseItems(purchaseId): Promise<any> {
+    var stmt = `SELECT PI.total_cost, PI.quantity, PI.type, I.description 
+     FROM purchase_item AS PI JOIN item AS I ON PI.item = I.id WHERE PI.purchase=${purchaseId};`
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+		return promise;
+  }
+
+
   /** PRIVATE METHODS */
 
   private newPurchaseItem(purchaseId, item): Promise<any> {

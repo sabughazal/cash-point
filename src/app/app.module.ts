@@ -84,6 +84,7 @@ import { PurchasePreviewComponent } from '../components/purchase-preview/purchas
     ProductPackagesComponent,
     CustomerLookupComponent,
     StockAdjustmentComponent,
+    PurchasePreviewComponent,
     StockCountComponent,
     RefundSaleComponent
   ],

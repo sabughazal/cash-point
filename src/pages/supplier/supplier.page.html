@@ -12,65 +12,66 @@
         </div>
     </div>
 
-    <div class="flex-fill">
-        <div class="row no-gutters" style="height: 100%;">
-            <div class="col-sm p-2" style="height: 100%; overflow-y: auto;">
-                <h4>Purchases</h4>
-                <table class="table table-striped">
+    <div class="d-flex flex-fill" style="overflow-y: hidden;">
+        <!-- purchases list -->
+        <div class="p-2" style="width: 70%; height: 100%; overflow-y: auto;">
+            <h4>Purchases</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let purchase of purchases; index as i">
+                        <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
+                        <td>
+                            {{ purchase.grand_total | number: '1.2-2' }}
+                            <span *ngIf="purchase.type == 'credit' && purchase.paid_amount < purchase.grand_total" class="text-danger"> <em>(Balance {{ purchase.grand_total - purchase.paid_amount | number: '1.2-2' }})</em></span>
+                            <span *ngIf="purchase.type == 'credit' && purchase.paid_amount >= purchase.grand_total" class="text-success"> <em>(Paid)</em></span>
+                        </td>
+                        <td>{{ purchase.type }}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-dark btn-sm mr-2" (click)="onViewPurchaseClick(purchase)">View</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="viewPurchasePayments(purchase)">View Payments ></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- payments of the selected purchase -->
+        <div class="p-2" style="width: 30%; height: 100%; overflow-y: auto; border-left: 1px solid lightgrey;">
+            <!-- No Selection -->
+            <div *ngIf="!selectedPurchase" class="d-flex justify-content-center text-center" style="height: 100%; opacity: 40%;">
+                <div class="align-self-center">
+                    <h3 class="text-muted"><em>Select a Purchase</em></h3>
+                </div>
+            </div>
+
+            <div *ngIf="selectedPurchase">
+                <h4>Payments</h4>
+                <div *ngIf="!currentPayments.length" class="text-center">
+                    <p>No Payments</p>
+                </div>
+                <table *ngIf="currentPayments.length" class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
-                            <th scope="col">Total Amount</th>
-                            <th scope="col">Type</th>
-                            <th scope="col"></th>
+                            <th scope="col">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let purchase of purchases; index as i">
-                            <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
-                            <td>
-                                {{ purchase.grand_total | number: '1.2-2' }}
-                                <span *ngIf="purchase.type == 'credit' && purchase.paid_amount < purchase.grand_total" class="text-danger"> <em>(Balance {{ purchase.grand_total - purchase.paid_amount | number: '1.2-2' }})</em></span>
-                                <span *ngIf="purchase.type == 'credit' && purchase.paid_amount >= purchase.grand_total" class="text-success"> <em>(Paid)</em></span>
-                            </td>
-                            <td>{{ purchase.type }}</td>
-                            <td>
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="viewPurchasePayments(purchase)">View Payments ></button>
-                            </td>
+                        <tr *ngFor="let payment of currentPayments; index as i">
+                            <td>{{ payment.ts | date: 'MMM d, y' }}</td>
+                            <td>{{ payment.amount | number: '1.2-2' }}</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="col-sm-4 p-2" style="height: 100%; overflow-y: auto; border-left: 1px solid lightgrey;">
-                
-                <!-- No Selection -->
-                <div *ngIf="!selectedPurchase" class="d-flex justify-content-center text-center" style="height: 100%; opacity: 40%;">
-                    <div class="align-self-center">
-                        <h3 class="text-muted"><em>Select a Purchase</em></h3>
-                    </div>
-                </div>
-
-                <div *ngIf="selectedPurchase">
-                    <h4>Payments</h4>
-                    <div *ngIf="!currentPayments.length" class="text-center">
-                        <p>No Payments</p>
-                    </div>
-                    <table *ngIf="currentPayments.length" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let payment of currentPayments; index as i">
-                                <td>{{ payment.ts | date: 'MMM d, y' }}</td>
-                                <td>{{ payment.amount | number: '1.2-2' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-success float-right" [disabled]="selectedPurchase.paid_amount >= selectedPurchase.grand_total" (click)="onNewPaymentClick()">Add Payment</button>
-                </div>
+                <button type="button" class="btn btn-success float-right" [disabled]="selectedPurchase.paid_amount >= selectedPurchase.grand_total" (click)="onNewPaymentClick()">Add Payment</button>
             </div>
         </div>
     </div>
