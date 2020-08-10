@@ -50,10 +50,11 @@ export class CustomerPage implements OnInit {
     var confirmed = confirm("Make a payment of " + form.value.amount + " AED?");
     if (!confirmed) return;
 
-    this.customerService.recordPayment(this.customerId, form.value.amount);
-    this.form.reset();
-    this.loadCustomer(this.customerId);
-    this.loadTransactions();
+    this.customerService.recordPayment(this.customerId, form.value.amount).then(() => {
+      this.form.reset();
+      this.loadCustomer(this.customerId);
+      this.loadTransactions();
+    });
   }
 
 

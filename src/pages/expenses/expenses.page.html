@@ -9,4 +9,36 @@
         </div>
     </div>
 
+    <!-- Empty Cart Icon -->
+    <div *ngIf="currentExpenses.length === 0" class="d-flex justify-content-center text-center" style="height: 100%; opacity: 40%;">
+        <div class="align-self-center">
+            <h3 class="display-4 text-muted"><em>Empty</em></h3>
+        </div>
+    </div>
+
+    <!-- List of Expenses -->
+    <div *ngIf="currentExpenses.length > 0" class="flex-fill" style="overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">External Document</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Note</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let expense of currentExpenses; index as i">
+                    <th scope="row">{{ expense.id }}</th>
+                    <td>{{ expense.ts | date: 'MMM d, y, h:mm:ss a' }}</td>
+                    <td>{{ expense.external_document }}</td>
+                    <td>{{ expense.amount | number: '1.2-2' }}</td>
+                    <td>{{ expense.note }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>

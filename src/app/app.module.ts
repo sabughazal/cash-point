@@ -83,6 +83,7 @@ import { UserLookupComponent } from '../components/user-lookup/user-lookup.compo
     NewSupplierComponent,
     NewItemComponent,
     NewPaymentComponent,
+    NewExpenseComponent,
     ProductPackagesComponent,
     CustomerLookupComponent,
     StockAdjustmentComponent,
