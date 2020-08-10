@@ -65,9 +65,11 @@ export class SaleService {
         sale.total_vat,
         sale.grand_total,
         customer ? customer : 'NULL',
-        `'${sale.type}'`
+        `'${sale.type}'`,
+        sale.is_delivery ? 1 : 0,
+        sale.delivered_by ? sale.delivered_by : 'NULL'
       ];
-      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type) 
+      var stmt = `INSERT INTO sale(subtotal, total_discount, net_amount, total_vat, grand_total, customer, type, is_delivery, delivered_by) 
       VALUES (${values.join(',')})`;
       let options = {
         params: {

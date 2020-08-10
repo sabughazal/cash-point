@@ -29,7 +29,10 @@
             <tbody>
                 <tr *ngFor="let sale of currentSales; index as i" [ngClass]="{'text-danger': sale.refund_reference}">
                     <th scope="row">{{ sale.id }}</th>
-                    <td>{{ sale.ts | date: 'MMM d, y, h:mm:ss a' }}</td>
+                    <td>
+                        {{ sale.ts | date: 'MMM d, y, h:mm:ss a' }} 
+                        <span *ngIf="sale.is_delivery == 1" class="badge badge-pill badge-primary">Delivery</span>
+                    </td>
                     <td>
                         {{ sale.grand_total | number: '1.2-2' }} 
                         <span *ngIf="sale.refund_reference">

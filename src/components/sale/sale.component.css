@@ -6,3 +6,7 @@
 #paymentButtons {
     height: 100px;
 }
+
+button {
+    box-shadow: none !important;
+}

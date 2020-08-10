@@ -1,0 +1,8 @@
+<div class="list-group list-group-flush">
+    <button *ngFor="let user of currentUsers" class="list-group-item list-group-item-action" (click)="onUserClick(user)">
+        <div class="d-flex w-100 justify-content-between">
+            <span class="mb-1">{{ user.firstname }} {{ user.lastname }}</span>
+            <span class="text-muted">Select</span>
+        </div>
+    </button>
+</div>

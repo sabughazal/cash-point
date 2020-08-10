@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SaleService } from 'src/services/sale/sale.service';
 import { CustomerLookupComponent } from '../customer-lookup/customer-lookup.component';
@@ -11,6 +11,7 @@ import { CustomerLookupComponent } from '../customer-lookup/customer-lookup.comp
 export class SaleComponent implements OnInit {
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @ViewChild('deliveryModal', {static: false}) deliveryModalElement: ElementRef;
   savedSales: Array<any> = [];
 
   saleItems: Array<any> = [];
@@ -20,6 +21,9 @@ export class SaleComponent implements OnInit {
   saleSubtotal: number = 0;
   saleTotalDiscount: number = 0;
   selectCustomerModalRef: NgbModalRef;
+  deliveryModalRef: NgbModalRef;
+  isDelivery: boolean = false;
+  deliveryMan: any = null;
 
   constructor(private modalService: NgbModal, private saleService: SaleService) {
     var current = localStorage.getItem('current_sale');
@@ -44,6 +48,22 @@ export class SaleComponent implements OnInit {
       this.selectCustomerModalRef.dismiss();
     }
     this.onChange.emit();
+  }
+
+
+  onDeliveryClick() {
+    if (this.isDelivery) {
+      this.unsetDelivery();
+    } else {
+      // open modal
+      this.deliveryModalRef = this.modalService.open(this.deliveryModalElement, {size: 'md'});
+    }
+  }
+
+
+  onDeliveryManSelect(deliveryMan) {
+    this.setDelivery(deliveryMan);
+    this.deliveryModalRef.close();
   }
   
 
@@ -96,6 +116,8 @@ export class SaleComponent implements OnInit {
         return acc + (curr.quantity * curr.total_price);
       }, 0),
       items: items,
+      is_delivery: this.isDelivery,
+      delivered_by: this.deliveryMan ? this.deliveryMan.id : undefined,
       type: type
     }
 
@@ -109,7 +131,7 @@ export class SaleComponent implements OnInit {
   }
 
 
-  openModal(modal) {
+  openCustomerModal(modal) {
     this.selectCustomerModalRef = this.modalService.open(modal, {size: 'lg'});
   }
 
@@ -129,6 +151,7 @@ export class SaleComponent implements OnInit {
   clearSale() {
     this.saleItems = [];
     this.selectedCustomer = null;
+    this.unsetDelivery();
     this.updateSummary();
     this.updateLocalStorage(); 
   }
@@ -196,6 +219,18 @@ export class SaleComponent implements OnInit {
     }
     
     this.onChange.emit();
+  }
+
+
+  private setDelivery(deliveryMan) {
+    this.isDelivery = true;
+    this.deliveryMan = deliveryMan;
+  }
+
+
+  private unsetDelivery() {
+    this.isDelivery = false;
+    this.deliveryMan = null;
   }
   
 
