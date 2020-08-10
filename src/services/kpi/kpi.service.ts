@@ -86,6 +86,24 @@ export class KpiService {
   }
 
 
+  getTodayExpenses(): Promise<any> {
+    var stmt = `CALL kpi_today_expenses();`;
+		let options = {
+      params: {
+        query: stmt
+      }
+    };
+    var promise = this.http.get(endpoint, options).toPromise();
+    promise.then((response: any) => {
+      if (response.data[0]) {
+        response.data[0]['total_expenses'] = parseFloat(response.data[0]['total_expenses']);
+      }
+      return response;
+    });
+		return promise;
+  }
+
+
   get30DaySalesMargin(): Promise<any> {
     var stmt = `CALL kpi_30day_sales_margin();`;
 		let options = {

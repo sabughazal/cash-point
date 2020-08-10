@@ -119,14 +119,15 @@
           <div class="card-body">
             <img *ngIf="getNetCashFlow() < 0" src="assets/icons/red-down-arrow.png" class="float-right" style="height: 100%; width: auto;">
             <img *ngIf="getNetCashFlow() > 0" src="assets/icons/green-up-arrow.png" class="float-right" style="height: 100%; width: auto;">
-            <small>{{ todayCashSales | number: '1.2-2' }} + {{ todayCustomerPayments | number: '1.2-2' }} - {{ todayCashPurchases | number: '1.2-2' }} - {{ todaySupplierPayments | number: '1.2-2' }} =</small>
+            <small>{{ todayCashSales | number: '1.0-2' }} + {{ todayCustomerPayments | number: '1.0-2' }} - 
+              {{ todayCashPurchases | number: '1.0-2' }} - {{ todaySupplierPayments | number: '1.0-2' }} - {{ todayExpenses | number: '1.0-2' }} =</small>
             <h3 class="card-title">{{ getNetCashFlow() | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
             <h6 class="card-subtitle mb-2 text-muted">Net Cash Flow</h6>
           </div>
         </div>
         <div class="card mt-3">
           <div class="card-body">
-            <h3 class="card-title">-- <sub><small>AED Today</small></sub></h3>
+            <h3 class="card-title">{{ todayExpenses | number: '1.2-2' }} <sub><small>AED Today</small></sub></h3>
             <h6 class="card-subtitle mb-2 text-muted">Other Expenses Today</h6>
           </div>
         </div>

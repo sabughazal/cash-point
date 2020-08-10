@@ -29,6 +29,7 @@ export class DashboardPage implements OnInit {
   todayTotalPurchases: number = 0;
   todayCustomerPayments: number = 0;
   todaySupplierPayments: number = 0;
+  todayExpenses: number = 0;
   totalCustomerCredit: number = 0;
   totalSupplierCredit: number = 0;
   overallSalesMargin: number = 0;
@@ -47,6 +48,7 @@ export class DashboardPage implements OnInit {
     this.loadSupplierPayments();
     this.loadChartData();
     this.loadCustomerCredit();
+    this.loadExpenses();
     this.loadSupplierrCredit();
     this.loadSalePerCategory();
     this.loadSaleMargin();
@@ -54,7 +56,7 @@ export class DashboardPage implements OnInit {
 
 
   getNetCashFlow(): number {
-    return this.todayCashSales + this.todayCustomerPayments - this.todayCashPurchases - this.todaySupplierPayments;
+    return this.todayCashSales + this.todayCustomerPayments - this.todayCashPurchases - this.todaySupplierPayments - this.todayExpenses;
   }
 
 
@@ -173,6 +175,15 @@ export class DashboardPage implements OnInit {
     this.kpiService.getTotalCustomerCredit().then(response => {
       if (response.data[0]['total_credit']) {
         this.totalCustomerCredit = response.data[0]['total_credit'];
+      }
+    });
+  }
+
+
+  private loadExpenses() {
+    this.kpiService.getTodayExpenses().then(response => {
+      if (response.data[0]['total_expenses']) {
+        this.todayExpenses = response.data[0]['total_expenses'];
       }
     });
   }
