@@ -20,6 +20,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Date</th>
+                        <th scope="col">External Doc.</th>
                         <th scope="col">Total Amount</th>
                         <th scope="col">Type</th>
                         <th scope="col"></th>
@@ -28,6 +29,7 @@
                 <tbody>
                     <tr *ngFor="let purchase of purchases; index as i">
                         <td>{{ purchase.ts | date: 'MMM d, y' }}</td>
+                        <td>{{ purchase.external_document }}</td>
                         <td>
                             {{ purchase.grand_total | number: '1.2-2' }}
                             <span *ngIf="purchase.type == 'credit' && purchase.paid_amount < purchase.grand_total" class="text-danger"> <em>(Balance {{ purchase.grand_total - purchase.paid_amount | number: '1.2-2' }})</em></span>
