@@ -22,7 +22,7 @@ export class SaleComponent implements OnInit {
   saleTotalDiscount: number = 0;
   selectCustomerModalRef: NgbModalRef;
   deliveryModalRef: NgbModalRef;
-  isDelivery: boolean = false;
+  isDelivery: boolean = null;
   deliveryMan: any = null;
 
   constructor(private modalService: NgbModal, private saleService: SaleService) {
@@ -52,7 +52,9 @@ export class SaleComponent implements OnInit {
 
 
   onDeliveryClick() {
-    if (this.isDelivery) {
+    if (this.isDelivery === null) {
+      this.isDelivery = false;
+    } else if (this.isDelivery === true) {
       this.unsetDelivery();
     } else {
       // open modal
@@ -86,6 +88,8 @@ export class SaleComponent implements OnInit {
   
 
   makePayment(type) {
+    if(this.isDelivery === null) return;
+
     var customerId = null;
     var items = this.saleItems.map(item => {
       return {
