@@ -233,7 +233,7 @@ export class SaleComponent implements OnInit {
 
 
   private unsetDelivery() {
-    this.isDelivery = false;
+    this.isDelivery = null;
     this.deliveryMan = null;
   }
   
